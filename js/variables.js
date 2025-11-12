@@ -1,5 +1,13 @@
+// ----------------------------------
+// Definiciones globales utilizadas por presentacion.js y ultimo.js
+// ----------------------------------
+
+// `videos` contiene las rutas relativas a los archivos de video para cada reto.
+// El índice del array coincide con `retoActual` (0-based).
 var videos = ['videos/repair.mp4','videos/ing.mp4','videos/soci.mp4','videos/comu.mp4','videos/xela.mp4'];
 
+// HTML de la botonera numérica reutilizable (0-9). Cada botón llama a la función
+// global `darNumero(valor)` que está definida en `presentacion.js`/`ultimo.js`.
 var botonesNumeros =
     '<button type="button" class="btn btn-outline-secondary" id="0" value="0" onclick="darNumero(\'0\')">0</button>\n' +
     '<button type="button" class="btn btn-outline-secondary" id="1" value="1" onclick="darNumero(\'1\')">1</button>\n' +
@@ -12,9 +20,13 @@ var botonesNumeros =
     '<button type="button" class="btn btn-outline-secondary" id="8" value="8" onclick="darNumero(\'8\')">8</button>\n' +
     '<button type="button" class="btn btn-outline-secondary" id="9" value="9" onclick="darNumero(\'9\')">9</button>';
 
+// `botonera` es un array con la HTML de los botones para cada reto. Cada entrada
+// corresponde a un reto en el mismo orden que `videos`, `msgRetos`, etc.
+// Puedes personalizar los botones por reto (por ejemplo, usar letras o símbolos).
 var botonera = [
-    botonesNumeros,
-    botonesNumeros,
+    botonesNumeros, // reto 0 usa 0-9
+    botonesNumeros, // reto 1 usa 0-9
+    // reto 2 usa botones con caracteres (caracteres alfanuméricos personalizados)
     '<button type="button" class="btn btn-outline-secondary" id="0" onclick="darNumero(\'e\')">e</button>\n' +
     '<button type="button" class="btn btn-outline-secondary" id="1" onclick="darNumero(\'o\')">o</button>\n' +
     '<button type="button" class="btn btn-outline-secondary" id="2" onclick="darNumero(\'S\')">s</button>\n' +
@@ -29,11 +41,17 @@ var botonera = [
     botonesNumeros
 ];
 
+// `botoneraRespuesta` define la estructura visual de los campos de respuesta
+// (por ejemplo, un span por cada dígito con icono de pregunta). Cada entrada
+// corresponde a un reto. Asegúrate de que el número de spans coincide con
+// `caracteresRespuesta[índice]` para que el comportamiento sea consistente.
 var botoneraRespuesta = [
+    // reto 0: 4 campos
     '<span id="respuesta1" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta2" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta3" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta4" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>',
+    // reto 1: 4 campos (en este proyecto esperan 7 caracteres, pero hay 4 visuales; cuidado)
     '<span id="respuesta1" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta2" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta3" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
@@ -41,6 +59,7 @@ var botoneraRespuesta = [
     '<span id="respuesta5" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta6" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta7" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>',
+    // reto 2: 10 campos con guiones intermedios
     '<span id="respuesta1" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta2" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta3" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
@@ -51,6 +70,7 @@ var botoneraRespuesta = [
     '<span id="respuesta8" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta9" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta10" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>',
+    // reto 3: 8 campos (con guiones en algunos lugares)
     '<span id="respuesta1" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta2" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>-' +
     '<span id="respuesta3" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
@@ -59,12 +79,14 @@ var botoneraRespuesta = [
     '<span id="respuesta6" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta7" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta8" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>',
+    // reto 4: 4 campos
     '<span id="respuesta1" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta2" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta3" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>' +
     '<span id="respuesta4" class=" btn btn-outline-secondary"><i class="fas fa-question"></i></span>',
 ];
 
+// Mensajes descriptivos para cada reto. Se usan en #msg.
 var msgRetos = [
     'Introduce Repair Code System ',
     'Importante! Seguide a orde dos ingredientes... <br>1 Leite - ' +
@@ -79,6 +101,7 @@ var msgRetos = [
     'Cando atopedes a peza do puzzle, vestídevos de pirata,<br> collede a bandeira e dirixídevos á illa Lucernario.<br> O tesouro vos agarda!\n'
 ];
 
+// Respuestas correctas (string). El índice se corresponde con el reto.
 var respuestasCorrectas = [
     '3023',
     '8726351',
@@ -87,5 +110,25 @@ var respuestasCorrectas = [
     '1996'
 ];
 
+// Número de caracteres esperados por reto (usado para comprobar longitud en darNumero)
 var caracteresRespuesta = [4,7,10,8,4];
 
+
+// -------------------------
+// Notas / Buenas prácticas
+// -------------------------
+// - Asegúrate de que la longitud del HTML en `botoneraRespuesta[i]` coincida con
+//   `caracteresRespuesta[i]` (o ajusta la lógica de UI) para evitar inconsistencias.
+// - Para añadir un nuevo reto: añadir un elemento en todos los arrays (videos,
+//   botonera, botoneraRespuesta, msgRetos, respuestasCorrectas y caracteresRespuesta)
+//   manteniendo el mismo índice.
+// - Los botones llaman a `darNumero` con valores que pueden ser dígitos o
+//   caracteres; `respuestasCorrectas` debe usar el mismo formato (strings).
+
+// Ejemplo mínimo para añadir un nuevo reto (índice 5):
+// videos.push('videos/nuevo.mp4');
+// botonera.push(botonesNumeros); // o HTML personalizado
+// botoneraRespuesta.push('<span id="respuesta1">?</span><span id="respuesta2">?</span>');
+// msgRetos.push('Texto del nuevo reto');
+// respuestasCorrectas.push('42');
+// caracteresRespuesta.push(2);
