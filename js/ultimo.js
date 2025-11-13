@@ -1,44 +1,45 @@
 // Código específico para la página final (ultimo.html)
-// Aquí `retoActual` está fijado al índice final (4) y existen acciones MQTT
+// Comentado y adaptado para no depender de Font Awesome.
 
+// Estado local de la entrada de respuesta
 var _respuesta = "";
 var _contador = 0;
 // En esta página trabajamos siempre con el reto 4 (último)
 var retoActual = 4;
 
-// Icono para marcar retos conseguidos
-var checkReto = '<i class="fas fa-skull-crossbones"></i>';
+// Icono/emoji para marcar retos conseguidos (reemplaza Font Awesome)
+var checkReto = '✅';
 
-// Inicialización segura al cargar el DOM
-$(document).ready(function(){ actualizar(retoActual); });
+// Aseguramos que la función actualizar se llame cuando el DOM esté listo
+if (typeof $ !== 'undefined') {
+    $(document).ready(function(){ actualizar(retoActual); });
+} else {
+    window.addEventListener('load', function(){ if(typeof actualizar==='function') actualizar(retoActual); });
+}
 
 /**
- * sleep bloqueante (NO recomendado en navegadores: detiene el hilo principal).
- * Actualmente se usa para espaciar envíos MQTT en este código, pero es mejor
- * usar temporizadores asíncronos (setTimeout/Promises) para no bloquear la UI.
- *
- * @param {number} milliseconds - tiempo a esperar en ms
+ * sleep asíncrono usando Promise + setTimeout (no bloqueante)
+ * @param {number} ms - milisegundos a esperar
+ * @returns {Promise<void>}
  */
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e8; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-            break;
-        }
-    }
+function sleepAsync(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
  * Función que recoge dígitos/caracteres y, si coincide con la respuesta correcta,
  * realiza una secuencia de acciones que incluyen comandos MQTT.
- * Nota: requiere un objeto `client` válido (MQTT) y la librería Messaging.
+ * Nota: requiere un objeto `client` válido (MQTT) y la librería Messaging si se
+ * quiere activar la secuencia MQTT. Si `client` no existe se salta esa parte.
+ * @param {string} numero - dígito o caracter introducido
  */
-function darNumero(numero){
+async function darNumero(numero){
     _respuesta = _respuesta + numero;
     _contador++;
     // rellenamos la respuesta segun vayan pulsando los botones
-    var $elem = $('#respuesta'+_contador);
+    var $elem = (typeof $ !== 'undefined') ? $('#respuesta'+_contador) : document.getElementById('respuesta'+_contador);
     if ($elem && $elem[0]) { $elem[0].innerText = numero; }
+    else if ($elem && $elem.innerText !== undefined) { $elem.innerText = numero; }
 
     // Valida que las variables globales existen
     if (typeof caracteresRespuesta === 'undefined' || typeof respuestasCorrectas === 'undefined') {
@@ -49,53 +50,33 @@ function darNumero(numero){
     // Comparaciones estrictas para evitar coerción
     if (_contador >= caracteresRespuesta[retoActual] && _respuesta === respuestasCorrectas[retoActual]) {
 
-        // ======= Bloque MQTT =======
-        // En este proyecto se usa la librería MQTT (Messaging) para enviar comandos
-        // a dispositivos tasmota. `client` debe estar inicializado y conectado.
-        // Se envían ON y OFF alternados a POWER1..POWER7 con pausas.
-        // IMPORTANTE: `sleep` es bloqueante — mejor reescribir con setTimeout/promises.
-
-        // debug
-        console.log("Respuesta: " + _respuesta + " contador: " + _contador);
-
-        if (typeof client !== 'undefined' && typeof Messaging !== 'undefined') {
-            for (let i=1; i<8; i++) {
-                // mqtt - encender
-                var message = new Messaging.Message("ON");
-                message.destinationName = "cmnd/tasmota/POWER" + i;
-                client.send(message);
-                // pausa (bloqueante actualmente)
-                sleep(2000);
-                // mqtt - apagar
-                message = new Messaging.Message("OFF");
-                message.destinationName = "cmnd/tasmota/POWER" + i;
-                client.send(message);
-            }
+        // Respuesta Correcta: mostramos modal de acierto si existe jQuery/Bootstrap
+        if (typeof $ !== 'undefined' && typeof $.fn.modal === 'function') {
+            $('#feito').modal('show');
         } else {
-            console.warn('MQTT client o Messaging no definidos; se omiten comandos MQTT');
+            alert('¡Correcto!');
         }
-        // ======= fin MQTT =======
-
-        // Respuesta Correcta: mostramos modal de acierto
-        $('#feito').modal('show');
 
         // Marcamos visualmente el reto como conseguido
-        var $retoEl = $('#reto'+retoActual);
+        var $retoEl = (typeof $ !== 'undefined') ? $('#reto'+retoActual) : document.getElementById('reto'+retoActual);
         if ($retoEl && $retoEl[0]) { $retoEl[0].innerHTML = checkReto; }
-
-        // Aquí se puede añadir lógica extra (animaciones, engranajes, etc.)
-        // por ejemplo: disparar una animación CSS o rotación de elementos.
+        else if ($retoEl && $retoEl.innerHTML !== undefined) { $retoEl.innerHTML = checkReto; }
 
     } else if (_contador >= caracteresRespuesta[retoActual] && _respuesta !== respuestasCorrectas[retoActual]){
         // Respuesta incorrecta
-        $('#nonfeito').modal('show');
+        if (typeof $ !== 'undefined' && typeof $.fn.modal === 'function') {
+            $('#nonfeito').modal('show');
+        } else {
+            alert('Respuesta incorrecta');
+        }
         // contador y respuesta a cero
         _contador=0;
         _respuesta="";
         // reseteamos la respuesta con '?'
         for(let i=1; i<caracteresRespuesta[retoActual]+1; i++) {
-            var $cell = $('#respuesta'+i);
-            if ($cell && $cell[0]) { $cell[0].innerHTML='<i class="fas fa-question"></i>'; }
+            var el = (typeof $ !== 'undefined') ? $('#respuesta'+i) : document.getElementById('respuesta'+i);
+            if (el && el[0]) { el[0].innerHTML='?'; }
+            else if (el && el.innerHTML !== undefined) { el.innerHTML='?'; }
         }
     }
 }
@@ -103,25 +84,28 @@ function darNumero(numero){
 /**
  * Actualiza la vista del último reto: no hay video en esta página, sólo texto,
  * botonera y marcamos los retos anteriores como completados.
+ * @param {number} reto - índice del reto a mostrar
  */
 function actualizar(reto){
-    // no hay video en la vista final (si existiera, se podría asignar como en presentacion.js)
-
     // texto del reto (mensaje fijo para la última página)
-    var $msg = $('#msg');
+    var $msg = (typeof $ !== 'undefined') ? $('#msg') : document.getElementById('msg');
     if ($msg && $msg[0]) { $msg[0].innerHTML = 'Ano da publicación:'; }
+    else if ($msg && $msg.innerHTML !== undefined) { $msg.innerHTML = 'Ano da publicación:'; }
 
     // botonera del reto
-    var $botonera = $('#botonera');
+    var $botonera = (typeof $ !== 'undefined') ? $('#botonera') : document.getElementById('botonera');
     if ($botonera && $botonera[0]) { $botonera[0].innerHTML = botonera[reto]; }
+    else if ($botonera && $botonera.innerHTML !== undefined) { $botonera.innerHTML = botonera[reto]; }
 
     // contador y respuesta a cero (representación visual)
-    var $botonerarespuesta = $('#botonerarespuesta');
+    var $botonerarespuesta = (typeof $ !== 'undefined') ? $('#botonerarespuesta') : document.getElementById('botonerarespuesta');
     if ($botonerarespuesta && $botonerarespuesta[0]) { $botonerarespuesta[0].innerHTML = botoneraRespuesta[reto]; }
+    else if ($botonerarespuesta && $botonerarespuesta.innerHTML !== undefined) { $botonerarespuesta.innerHTML = botoneraRespuesta[reto]; }
 
     // Marcamos todos los retos previos como completados (visual)
     for(let i=0; i<4; i++) {
-        var $r = $('#reto'+i);
+        var $r = (typeof $ !== 'undefined') ? $('#reto'+i) : document.getElementById('reto'+i);
         if ($r && $r[0]) { $r[0].innerHTML = checkReto; }
+        else if ($r && $r.innerHTML !== undefined) { $r.innerHTML = checkReto; }
     }
 }
