@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Panel 8x4 - WebQR</title>
+    <title>Escapate!</title>
 
     <!-- Bootstrap 5 CSS desde CDN (sin integrity para evitar warning de librería local) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -65,24 +65,20 @@
         .cell .overlay{
             position:absolute;left:6px;top:6px;padding:4px 6px;border-radius:4px;background:rgba(0,0,0,0.45);color:var(--accent);font-size:12px;backdrop-filter: blur(4px);
         }
-        /* Controles opcionales en la esquina */
-        /* Ocultar controles en escritorio; solo mostrarlos en pantallas móviles */
+        /* Controles visibles siempre, pequeños y en la esquina inferior izquierda */
         .controls{
-            position:absolute;right:18px;top:18px;z-index:50;display:none;gap:8px;align-items:center;
+            position:absolute;left:12px;bottom:12px;z-index:50;display:flex;gap:6px;align-items:center;transform:translateZ(0);
         }
         .btn-ghost{
-            background:transparent;border:1px solid rgba(57,255,20,0.14);color:var(--accent);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer
+            background:transparent;border:1px solid rgba(57,255,20,0.14);color:var(--accent);padding:6px 8px;border-radius:6px;font-size:12px;cursor:pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
         .legend{position:absolute;left:18px;bottom:18px;color:rgba(230,247,255,0.75);font-size:13px}
         @media (max-width:640px){
             .panel{gap:4px;padding:6px}
             .cell .overlay{font-size:11px}
         }
-        /* Mostrar controles cuando la anchura sea de móvil (<=768px) */
-        @media (max-width: 768px) {
-            .controls{ display:flex; }
-            .btn-ghost{ padding:8px 12px; font-size:14px; }
-        }
+        /* (Controles siempre visibles; responsive adjustments no necesarios) */
     </style>
 </head>
 <body>
@@ -347,17 +343,8 @@
     try{ document.getElementById('reset').removeEventListener('click', resetGrid); } catch(e) { /* ignore if not attached */ }
     document.getElementById('reset').addEventListener('click', function(){ resetGrid(); restoreUIAfterReset(); });
 
-    // Mostrar/ocultar controles según tamaño de pantalla (CSS + JS)
-    // Se usa matchMedia para manejar cambios dinámicos (resize, rotación) y accesibilidad.
-    function updateControlsVisibility(){
-        const controls = document.querySelector('.controls');
-        if(!controls) return;
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        controls.style.display = isMobile ? 'flex' : 'none';
-        controls.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
-    }
-    window.addEventListener('load', updateControlsVisibility);
-    window.addEventListener('resize', updateControlsVisibility);
+    // No se requiere lógica JS adicional para mostrar/ocultar controles;
+    // los controles son siempre visibles en la esquina inferior izquierda.
 
 </script>
 
