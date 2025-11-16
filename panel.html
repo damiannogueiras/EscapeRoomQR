@@ -128,48 +128,112 @@
         'images/permiso_OK.png'
     ];
 
+    // identiicacion de indices
+    const PERMISO_X = 0;
+    const PERMISO_VACIO = 1;
+    const PERMISO_OK = 2;
+
+    // tamaño del panel
     const COLS = 8;
     const ROWS = 4;
+
+    // secuencia de celdas que son el código para limpiar virus
+    const CODIGO_SECRETO = [
+        'A1','B3','C2','D4','D5'
+    ];
+
+    // fallos maximos para acertar el codigo secreto
+    const MAX_FALLOS = 3;
+    // fallos actuales
+    let fallos = 0;
+
+    // contador numero aciertos codigo secreto
+    let contador = 0;
+
     const PANEL = document.getElementById('panel');
 
     // Crea las celdas con una imagen inicial y un índice para rastrear la imagen actual
     function createGrid(){
         // Vacía el panel por si ya existieran celdas
         PANEL.innerHTML = '';
-        const total = COLS * ROWS;
-        for(let i=0;i<total;i++){
-            const cell = document.createElement('button');
-            cell.type = 'button';
-            cell.className = 'cell';
-            cell.setAttribute('role','gridcell');
-            cell.setAttribute('aria-label', `Celda ${i+1}`);
-            // Inicializamos todas las celdas en estado 'permiso_vacio' (IMAGES[1])
-            const initial = 1; // 1 => permiso_vacio, 0 => permiso_X
-            cell.dataset.imgIndex = String(initial);
 
-            const img = document.createElement('img');
-            img.src = IMAGES[initial];
-            img.alt = `Permiso vacio`;
+        // Crear celdas en orden fila-major con identificadores tipo A1, A2, ..., B1, B2, ...
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        for (let r = 0; r < ROWS; r++) {
+            const rowLetter = letters[r] || String.fromCharCode(65 + r);
+            for (let c = 1; c <= COLS; c++) {
+                const coord = `${rowLetter}${c}`;
+                const cell = document.createElement('button');
+                cell.type = 'button';
+                cell.className = 'cell';
+                cell.setAttribute('role','gridcell');
+                // identificamos el boton con coordenadas (A1, A2, ...)
+                cell.setAttribute('aria-label', `${coord}`);
+                // Inicializamos todas las celdas en estado 'permiso_vacio' (IMAGES[1])
+                const initial = PERMISO_VACIO; // 1 => permiso_vacio, 0 => permiso_X
+                cell.dataset.imgIndex = String(initial);
 
-            const overlay = document.createElement('span');
-            overlay.className = 'overlay';
-            overlay.textContent = `${i+1}`;
+                const img = document.createElement('img');
+                img.src = IMAGES[initial];
+                img.alt = `Permiso vacio`;
 
-            cell.appendChild(img);
-            cell.appendChild(overlay);
+                const overlay = document.createElement('span');
+                overlay.className = 'overlay';
+                overlay.textContent = coord;
 
-            // Al hacer click, cambia entre ok o X
-            cell.addEventListener('click', ()=>{
-                const current = Number(cell.dataset.imgIndex) || 0;
-                // si permiso_vacio, cambiar a permiso_X; si permiso_X, cambiar a permiso_vacio
-                cell.dataset.imgIndex = String(current === 1 ? 2 : 1);
-                const next = Number(cell.dataset.imgIndex);
-                cell.dataset.imgIndex = String(next);
-                img.src = IMAGES[next];
-                img.alt = `Imagen ${next}`;
-            });
+                cell.appendChild(img);
+                cell.appendChild(overlay);
 
-            PANEL.appendChild(cell);
+                // Al hacer click, coprueba codio secreto
+                cell.addEventListener('click', ()=>{
+                    // const current = Number(cell.dataset.imgIndex) || 0;
+                    // Comprueba si se clickea bien el codigo secreto si no aviso de fallo y muestra fallos restantes
+                    if(fallos <= MAX_FALLOS){
+                        // si la celda coincide con el CODIGO_SECRETO
+                        // cambiar a permiso_OK y sumar uno a contador; de lo contrario, cambiar a permiso_X
+                        if (CODIGO_SECRETO.includes(coord)) {
+                            cell.dataset.imgIndex = String(PERMISO_OK);
+                            img.src = IMAGES[PERMISO_OK];
+                            img.alt = `Permiso OK`;
+                            console.log(`Acertaste ${coord}`);
+                            contador++;
+                        } else {
+                            cell.dataset.imgIndex = String(PERMISO_X);
+                            img.src = IMAGES[PERMISO_X];
+                            img.alt = `Permiso X`;
+                            fallos++;
+                            console.log(`Fallo ${fallos}`);
+                            const mensajeEl = document.getElementById('mensaje');
+                            mensajeEl.textContent = `TE QUEDA ${(MAX_FALLOS - fallos)} FALLOS`
+                        }
+                    }
+
+                    if (fallos === MAX_FALLOS){
+                        finJuego(false)
+                    }
+                    // si contador es igual a CODIGO_SECRETO.length, se acierta el codigo secreto
+                    // FIN del juego
+                    if (contador === CODIGO_SECRETO.length) {
+                        finJuego(true)
+                    }
+                });
+
+                PANEL.appendChild(cell);
+            }
+        }
+    }
+
+
+
+    // fin del juego
+    function finJuego(ganador){
+        // mensaje WIN
+        if (ganador) {
+            const mensajeEl = document.getElementById('mensaje');
+            mensajeEl.textContent = "GANASTE"
+        } else {
+            const mensajeEl = document.getElementById('mensaje');
+            mensajeEl.textContent = "PERDISTE"
         }
     }
 
@@ -187,21 +251,22 @@
     }
 
     // =====================================================
-    // Funcionalidad 'Prohibir' (antes 'Mezclar')
-    // Cada 2s convierte aleatoriamente un permiso_vacio en permiso_X
-    // hasta que queden exactamente 10 permisos_vacios.
+    // Funcionalidad 'Prohibir'
+    // Cada intervalo convierte aleatoriamente un permiso_vacio en permiso_X
+    // hasta que queden exactamente target permisos_vacios.
     // =====================================================
     let prohibitionInterval = null;
-    const PROHIBITION_INTERVAL_MS = 2000;
+    const PROHIBITION_INTERVAL_MS = 1000;
     const TARGET_EMPTY_PERMISSIONS = 10;
 
     function countEmptyPermissions(){
         const cells = Array.from(PANEL.querySelectorAll('.cell'));
-        return cells.reduce((acc, c) => acc + ((c.dataset.imgIndex === '1' || c.querySelector('img').src.includes('permiso_vacio')) ? 1 : 0), 0);
+        return cells.reduce((acc, c) => acc + ((
+            c.dataset.imgIndex === PERMISO_VACIO.toString() || c.querySelector('img').src.includes('permiso_vacio')) ? PERMISO_VACIO : PERMISO_X), PERMISO_X);
     }
 
     function pickRandomEmptyCell(){
-        const empties = Array.from(PANEL.querySelectorAll('.cell')).filter(c => (c.dataset.imgIndex === '1' || c.querySelector('img').src.includes('permiso_vacio')));
+        const empties = Array.from(PANEL.querySelectorAll('.cell')).filter(c => (c.dataset.imgIndex === PERMISO_VACIO.toString() || c.querySelector('img').src.includes('permiso_vacio')));
         if(empties.length === 0) return null;
         return empties[Math.floor(Math.random() * empties.length)];
     }
@@ -280,8 +345,8 @@
 
             // convertir a permiso_X (IMAGES[0])
             const img = cell.querySelector('img');
-            cell.dataset.imgIndex = '0';
-            img.src = IMAGES[0];
+            cell.dataset.imgIndex = PERMISO_X.toString();
+            img.src = IMAGES[PERMISO_X];
             img.alt = 'permiso_X';
 
             // actualizar contador visible
