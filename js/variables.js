@@ -103,6 +103,17 @@ var msgRetos = [
     'Cando atopedes a peza do puzzle, vestídevos de pirata,<br> collede a bandeira e dirixídevos á illa Lucernario.<br> O tesouro vos agarda!\n'
 ];
 
+3023// Instrucciones breves para cada reto (string array). Se mostrarán en
+// el elemento con id="instrucciones" (insertado en el HTML) y sirven como
+// pista o guía rápida para el jugador. Mantener el mismo orden que `msgRetos`.
+var instruccionesRetos = [
+    'Fai click no vídeo para reproducir e observa as pezas; tes que introducir o código de 4 díxitos.',
+    'Segue a orde dos ingredientes e lembra os pasos; introduce os 7 díxitos correspondentes.',
+    'Consulta o calendario ou o material provisto para completar a palabra de 10 caracteres.',
+    'Introduce a data no formato DDMMYYYY para desbloquear o reto.',
+    'Busca pola escena a peza indicada, trae a bandeira e introduce o código final de 4 díxitos.'
+];
+
 // Respuestas correctas (string). El índice se corresponde con el reto.
 var respuestasCorrectas = [
     '3023',

@@ -82,35 +82,59 @@ function darNumero(numero){
  * @param {number} reto - índice del reto a mostrar
  */
 function actualizar(reto){
-    // Comprobaciones defensivas sobre variables externas
-    if (typeof videos === 'undefined' || typeof msgRetos === 'undefined' || typeof botonera === 'undefined' || typeof botoneraRespuesta === 'undefined') {
-        console.warn('Faltan variables globales necesarias (videos, msgRetos, botonera, botoneraRespuesta)');
-        return;
+    // Defensive: validate that the arrays exist; if not, warn but continue with defaults
+    if (typeof msgRetos === 'undefined') { console.warn('msgRetos no definido'); msgRetos = []; }
+    if (typeof botonera === 'undefined') { console.warn('botonera no definido'); botonera = []; }
+    if (typeof botoneraRespuesta === 'undefined') { console.warn('botoneraRespuesta no definido'); botoneraRespuesta = []; }
+    if (typeof videos === 'undefined') { videos = []; }
+
+    // Normalize index
+    var idx = parseInt(reto, 10);
+    if (isNaN(idx) || idx < 0) idx = 0;
+    // clamp to available range (use last available index if requested is too large)
+    var maxIndex = Math.max(msgRetos.length, botonera.length, botoneraRespuesta.length) - 1;
+    if (maxIndex < 0) maxIndex = 0;
+    if (idx > maxIndex) idx = maxIndex;
+
+    // Debug logs to help diagnose UI update issues
+    try{
+        console.log('[presentacion] actualizar called with reto=', reto, '-> idx=', idx, 'maxIndex=', maxIndex);
+        console.log('[presentacion] arrays lengths: msgRetos=', msgRetos.length, 'botonera=', botonera.length, 'botoneraRespuesta=', botoneraRespuesta.length, 'videos=', videos.length);
+    }catch(e){ /* ignore logging errors */ }
+
+    // Update global state so the rest of the app can rely on retoActual
+    retoActual = idx;
+
+    // Update video safely
+    if (myVideo) {
+        if (videos[idx]) {
+            try{ myVideo.setAttribute('src', videos[idx]); } catch(e){ console.warn('No se pudo setear src del video:', e); }
+            try{ myVideo.setAttribute('poster', 'images/' + idx + '.png'); } catch(e){ /* ignore */ }
+        } else {
+            // No video for this index — remove src to avoid playing stale content
+            try{ myVideo.removeAttribute('src'); } catch(e){/*ignore*/}
+        }
     }
 
-    // Actualizar video si existe y hay una entrada válida
-    if (myVideo && videos[reto]) {
-        myVideo.setAttribute('src', videos[reto]);
-        myVideo.setAttribute('poster', 'images/' + reto + '.png');
-    }
-
-    // Cachear selectores usados varias veces
+    // Cache selectors
     var $labelRespuesta = $('#labelRespuesta');
     var $botonera = $('#botonera');
     var $botonerarespuesta = $('#botonerarespuesta');
+    var $instrucciones = $('#instrucciones');
     var $msg = $('#msg');
 
-    // Si estamos en el último reto (por convención el índice 4), ocultar la sección de respuesta
-    if (reto === 4) {
-        if ($labelRespuesta && $labelRespuesta.hide) { $labelRespuesta.hide(); }
-        if ($botonera && $botonera.hide) { $botonera.hide(); }
-    } else {
-        if ($labelRespuesta && $labelRespuesta.show) { $labelRespuesta.show(); }
-        if ($botonera && $botonera.show) { $botonera.show(); }
-    }
+    // Always show input sections on index.html (we removed ultimo.html flow)
+    if ($labelRespuesta && $labelRespuesta.show) { $labelRespuesta.show(); }
+    if ($botonera && $botonera.show) { $botonera.show(); }
 
-    // Escribir mensaje y botoneras
-    if ($msg && $msg[0]) { $msg[0].innerHTML = msgRetos[reto]; }
-    if ($botonera && $botonera[0]) { $botonera[0].innerHTML = botonera[reto]; }
-    if ($botonerarespuesta && $botonerarespuesta[0]) { $botonerarespuesta[0].innerHTML = botoneraRespuesta[reto]; }
+    // Write safe values (use empty string if undefined)
+    var safeMsg = (msgRetos[idx] !== undefined) ? msgRetos[idx] : '';
+    var safeInstr = (typeof instruccionesRetos !== 'undefined' && instruccionesRetos[idx]) ? instruccionesRetos[idx] : '';
+    var safeBotonera = (botonera[idx] !== undefined) ? botonera[idx] : '';
+    var safeBotoneraRespuesta = (botoneraRespuesta[idx] !== undefined) ? botoneraRespuesta[idx] : '';
+
+    if ($msg && $msg[0]) { $msg[0].innerHTML = safeMsg; }
+    if ($instrucciones && $instrucciones[0]) { $instrucciones[0].innerHTML = safeInstr; }
+    if ($botonera && $botonera[0]) { $botonera[0].innerHTML = safeBotonera; }
+    if ($botonerarespuesta && $botonerarespuesta[0]) { $botonerarespuesta[0].innerHTML = safeBotoneraRespuesta; }
 }

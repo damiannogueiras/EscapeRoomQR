@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Run single test - Harness</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#071020;color:#cfe;padding:18px}
+    .box{background:#0b1a25;padding:12px;border-radius:8px;margin-bottom:12px}
+    label{display:block;margin-bottom:6px;color:#9ff}
+    input,select,button{padding:6px;border-radius:6px;border:1px solid rgba(57,255,20,0.08);background:#071a1a;color:#cfe}
+    #log{height:200px;overflow:auto;background:#020608;padding:8px;border-radius:6px;border:1px solid #0a2;color:#8f8;font-family:monospace}
+    .row{display:flex;gap:8px;align-items:center}
+  </style>
+</head>
+<body>
+  <h2>Test harness — ejecutar pruebas individuales</h2>
+  <p>Este entorno carga las variables y scripts de la app y te permite invocar funciones concretas sin ejecutar todo el flujo.</p>
+
+  <div class="box">
+    <label for="testSelect">Selecciona función a probar</label>
+    <div class="row">
+      <select id="testSelect">
+        <option value="darNumero">darNumero(numero)</option>
+        <option value="actualizar">actualizar(reto)</option>
+        <option value="resetGrid">resetGrid()</option>
+      </select>
+      <input id="argInput" placeholder="argumento (ej: 1 o 0)" />
+      <button id="runBtn">Ejecutar</button>
+      <button id="reloadBtn">Recargar scripts</button>
+    </div>
+  </div>
+
+  <div class="box">
+    <label>Estado (variables relevantes)</label>
+    <pre id="state">Cargando...</pre>
+  </div>
+
+  <div class="box">
+    <label>Logs</label>
+    <div id="log"></div>
+    <button id="clearLog">Limpiar</button>
+  </div>
+
+  <!-- Simulación mínima de la estructura de index.html para pruebas -->
+  <div class="box" id="app-sim">
+    <div class="card" style="width:auto;">
+      <div class="card-body">
+        <div id="instrucciones" class="card-subtitle mb-2 text-muted"></div>
+        <h5 id="msg" class="card-title"></h5>
+        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+          <div id="botonera" class="btn-group me-2" role="group" aria-label="First group"></div>
+        </div>
+        <div id="labelRespuesta" class="card-title">
+          <h5>Respuesta:</h5>
+          <div id="botonerarespuesta" class="card-title"></div>
+        </div>
+        <h5 class="card-title">Retos Conseguidos:</h5>
+        <h5 class="card-title">
+          <span id="reto0" class=" btn btn-outline-secondary">1</span>
+          <span id="reto1" class=" btn btn-outline-secondary">2</span>
+          <span id="reto2" class=" btn btn-outline-secondary">3</span>
+          <span id="reto3" class=" btn btn-outline-secondary">4</span>
+          <span id="reto4" class=" btn btn-outline-secondary">5</span>
+        </h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dependencias: carga jQuery y luego los scripts del proyecto -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/variables.js"></script>
+  <script src="/js/presentacion.js"></script>
+
+  <script>
+    // capture console.log to visual log
+    (function(){
+      var oldLog = console.log;
+      console.log = function(){
+        var msg = Array.prototype.slice.call(arguments).join(' ');
+        var el = document.getElementById('log');
+        if(el) el.innerHTML += msg + '\n';
+        oldLog.apply(console, arguments);
+      };
+      var oldWarn = console.warn;
+      console.warn = function(){
+        var msg = Array.prototype.slice.call(arguments).join(' ');
+        var el = document.getElementById('log');
+        if(el) el.innerHTML += 'WARN: ' + msg + '\n';
+        oldWarn.apply(console, arguments);
+      };
+    })();
+
+    function updateState(){
+      var s = '';
+      try{
+        s += 'retoActual: ' + (typeof retoActual !== 'undefined' ? retoActual : 'undefined') + '\n';
+        s += '_respuesta: ' + (typeof _respuesta !== 'undefined' ? _respuesta : 'undefined') + '\n';
+        s += '_contador: ' + (typeof _contador !== 'undefined' ? _contador : 'undefined') + '\n';
+        s += 'msgRetos.length: ' + (typeof msgRetos !== 'undefined' ? msgRetos.length : 'undefined') + '\n';
+        s += 'instruccionesRetos[retoActual]: ' + ((typeof instruccionesRetos !== 'undefined' && instruccionesRetos[retoActual]) ? instruccionesRetos[retoActual] : '(vacío)') + '\n';
+      }catch(e){ s = 'Error leyendo estado: '+e }
+      document.getElementById('state').innerText = s;
+    }
+
+    document.getElementById('runBtn').addEventListener('click', function(){
+      var fn = document.getElementById('testSelect').value;
+      var arg = document.getElementById('argInput').value;
+      try{
+        if(fn === 'darNumero'){
+          // llamar a darNumero sin afectar flujo completo; resetea estado previo si quieres
+          window.darNumero(arg);
+        } else if(fn === 'actualizar'){
+          var n = Number(arg);
+          window.actualizar(n);
+        } else if(fn === 'resetGrid'){
+          if(window.resetGrid) window.resetGrid();
+        }
+      }catch(e){ console.log('Error al ejecutar:', e); }
+      updateState();
+    });
+
+    document.getElementById('clearLog').addEventListener('click', function(){ document.getElementById('log').innerText = ''; });
+    document.getElementById('reloadBtn').addEventListener('click', function(){ location.reload(); });
+
+    // initial
+    setTimeout(updateState, 200);
+  </script>
+</body>
+</html>

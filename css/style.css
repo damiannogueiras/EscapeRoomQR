@@ -1,3 +1,7 @@
+:root{
+    --accent: #39ff14; /* verde retrofuturista */
+}
+
 html {
     background: url("https://cdn.pixabay.com/photo/2024/03/29/02/30/ai-generated-8662021_1280.jpg") no-repeat center center fixed;
     background-size: cover;
@@ -9,7 +13,7 @@ html {
 /* Fondo semitransparente para que el contenido destaque */
 body {
     background: linear-gradient(180deg, rgba(0,6,15,0.55) 0%, rgba(2,8,16,0.65) 100%);
-    color: #E6F7FF;
+    color: var(--accent);
     font-family: 'Space Mono', monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -35,18 +39,18 @@ body {
     color: #DDF9FF;
 }
 
-/* Títulos con tipografía futurista y glow */
+/* Títulos con tipografía futurista y glow (verde) */
 h1, h2, h3, .card-title {
     font-family: 'Orbitron', sans-serif;
-    color: #8FF7FF;
+    color: var(--accent);
     letter-spacing: 1.5px;
-    text-shadow: 0 0 8px rgba(143,247,255,0.18), 0 0 24px rgba(0,168,255,0.08);
+    text-shadow: 0 0 8px rgba(57,255,20,0.18), 0 0 24px rgba(57,255,20,0.08);
 }
 
-/* Readouts / displays tipo terminal */
+/* Readouts / displays tipo terminal: texto en verde */
 .readout, #msg, .card .card-title {
     font-family: 'Space Mono', monospace;
-    color: #BFF7FF;
+    color: var(--accent);
 }
 
 /* Botones neon */
@@ -110,8 +114,8 @@ body::after {
     margin-right: .25rem;
     border-radius: 4px;
     background: rgba(0,12,20,0.35);
-    border: 1px solid rgba(123,240,255,0.06);
-    color: #CFF9FF;
+    border: 1px solid rgba(57,255,20,0.06);
+    color: var(--accent);
     min-width: 2.6rem;
     text-align: center;
 }
@@ -124,4 +128,28 @@ body::after {
 @media (max-width: 600px) {
     .container { width: 95%; padding: .8rem; }
     #my-video { height: auto; }
+}
+
+/* Alertas: modal invertido — fondo negro y letras verdes */
+#feito .modal-content, #nonfeito .modal-content {
+    background: #000 !important; /* fondo negro */
+    color: var(--accent) !important; /* texto verde */
+    border-radius: 6px;
+    border: 1px solid rgba(57,255,20,0.08);
+}
+/* Encabezado y cuerpo mantienen fondo transparente (heredan negro) y texto verde */
+#feito .modal-header, #nonfeito .modal-header, #feito .modal-body, #nonfeito .modal-body {
+    background: transparent;
+    color: var(--accent) !important;
+}
+/* Botón del modal: transparente con texto verde y borde sutil */
+#feito .modal-footer .btn, #nonfeito .modal-footer .btn {
+    background: rgba(255,255,255,0.03);
+    color: var(--accent);
+    border: 1px solid rgba(57,255,20,0.12);
+}
+/* Hover state para botones del modal */
+#feito .modal-footer .btn:hover, #nonfeito .modal-footer .btn:hover {
+    background: rgba(57,255,20,0.06);
+    color: #000;
 }

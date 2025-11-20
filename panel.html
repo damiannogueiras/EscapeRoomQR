@@ -227,12 +227,11 @@
 
     // fin del juego
     function finJuego(ganador){
-        // mensaje WIN
+        // mensaje
+        const mensajeEl = document.getElementById('mensaje');
         if (ganador) {
-            const mensajeEl = document.getElementById('mensaje');
             mensajeEl.textContent = "GANASTE"
         } else {
-            const mensajeEl = document.getElementById('mensaje');
             mensajeEl.textContent = "PERDISTE"
         }
     }
