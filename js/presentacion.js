@@ -13,12 +13,13 @@ var retoActual = 0;    // índice (0-based) del reto actualmente activo
 var checkReto = '<i class="fas fa-skull-crossbones"></i>';
 
 // Referencia al elemento <video id="my-video"> (puede ser null si no existe)
-var myVideo = document.getElementById('my-video');
+// Referencia al elemento <audio id="my-audio"> (puede ser null si no existe)
+var myAudio = document.getElementById('my-audio');
 
 // Inicialización al cargar el DOM: cargar el reto inicial
-$(document).ready(function(){
+$(document).ready(function () {
     try { actualizar(retoActual); }
-    catch(e){ console.warn('Error inicializando presentación:', e); }
+    catch (e) { console.warn('Error inicializando presentación:', e); }
 });
 
 /**
@@ -28,7 +29,7 @@ $(document).ready(function(){
  *
  * @param {string|number} numero - valor introducido por el usuario (p. ej. '1' o 'A')
  */
-function darNumero(numero){
+function darNumero(numero) {
     _respuesta = _respuesta + numero;
     _contador++;
 
@@ -81,7 +82,7 @@ function darNumero(numero){
  *
  * @param {number} reto - índice del reto a mostrar
  */
-function actualizar(reto){
+function actualizar(reto) {
     // Defensive: validate that the arrays exist; if not, warn but continue with defaults
     if (typeof msgRetos === 'undefined') { console.warn('msgRetos no definido'); msgRetos = []; }
     if (typeof botonera === 'undefined') { console.warn('botonera no definido'); botonera = []; }
@@ -97,22 +98,45 @@ function actualizar(reto){
     if (idx > maxIndex) idx = maxIndex;
 
     // Debug logs to help diagnose UI update issues
-    try{
+    try {
         console.log('[presentacion] actualizar called with reto=', reto, '-> idx=', idx, 'maxIndex=', maxIndex);
         console.log('[presentacion] arrays lengths: msgRetos=', msgRetos.length, 'botonera=', botonera.length, 'botoneraRespuesta=', botoneraRespuesta.length, 'videos=', videos.length);
-    }catch(e){ /* ignore logging errors */ }
+    } catch (e) { /* ignore logging errors */ }
 
     // Update global state so the rest of the app can rely on retoActual
     retoActual = idx;
 
-    // Update video safely
-    if (myVideo) {
-        if (videos[idx]) {
-            try{ myVideo.setAttribute('src', videos[idx]); } catch(e){ console.warn('No se pudo setear src del video:', e); }
-            try{ myVideo.setAttribute('poster', 'images/' + idx + '.png'); } catch(e){ /* ignore */ }
-        } else {
-            // No video for this index — remove src to avoid playing stale content
-            try{ myVideo.removeAttribute('src'); } catch(e){/*ignore*/}
+    // Update audio safely
+    var myAudio = document.getElementById('my-audio');
+    if (myAudio) {
+        // Stop previous audio
+        myAudio.pause();
+        myAudio.currentTime = 0;
+
+        // Dynamic audio source based on challenge index (1-based for filenames)
+        var audioSrc = 'audios/mensaje_reto' + (idx + 1) + '.mp3';
+
+        // Check if we need to use the specific "prohibiendo.mp3" for the first challenge 
+        // or if we strictly follow the new rule. The user said "mensaje_reto1.mp3" for reto 1.
+        // I will assume the user wants the new convention for all.
+        // However, I should check if the file exists or just set it. 
+        // Since I can't check file existence easily in client-side JS without a request, 
+        // I will just set it.
+
+        myAudio.src = audioSrc;
+
+        // Attempt to play if the user has already interacted (reto > 0 usually implies interaction)
+        // or if the visualizer is initialized.
+        // We can try to play and catch the error if it's blocked.
+        if (idx > 0 || (window.visualizer && window.visualizer.isInitialized)) {
+            var playPromise = myAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Auto-play prevented:', error);
+                    // Show overlay again if needed? 
+                    // For now, we rely on the user noticing the audio stopped or clicking if needed.
+                });
+            }
         }
     }
 
