@@ -1,8 +1,10 @@
 :root {
     --bg-color: #050505;
     --panel-bg: rgba(10, 15, 20, 0.85);
-    --primary-color: #00ff9d; /* Cyber Green */
-    --secondary-color: #00d2ff; /* Cyber Blue */
+    --primary-color: #00ff9d;
+    /* Cyber Green */
+    --secondary-color: #00d2ff;
+    /* Cyber Blue */
     --alert-color: #ff2a2a;
     --text-color: #e0e0e0;
     --font-display: 'Orbitron', sans-serif;
@@ -13,9 +15,6 @@
 
 body {
     background-color: var(--bg-color);
-    background-image: 
-        linear-gradient(rgba(0, 10, 20, 0.9), rgba(0, 10, 20, 0.9)),
-        url("https://cdn.pixabay.com/photo/2024/03/29/02/30/ai-generated-8662021_1280.jpg");
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -51,7 +50,11 @@ body {
 }
 
 /* --- Typography --- */
-h1, h2, h3, .panel-title, .modal-title {
+h1,
+h2,
+h3,
+.panel-title,
+.modal-title {
     font-family: var(--font-display);
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -100,9 +103,18 @@ h1, h2, h3, .panel-title, .modal-title {
     display: inline-block;
     margin-left: 5px;
 }
-.dot.red { background-color: #ff5f56; }
-.dot.yellow { background-color: #ffbd2e; }
-.dot.green { background-color: #27c93f; }
+
+.dot.red {
+    background-color: #ff5f56;
+}
+
+.dot.yellow {
+    background-color: #ffbd2e;
+}
+
+.dot.green {
+    background-color: #27c93f;
+}
 
 .panel-body {
     padding: 20px;
@@ -134,9 +146,17 @@ h1, h2, h3, .panel-title, .modal-title {
 }
 
 @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* --- Controls --- */
@@ -178,7 +198,8 @@ h1, h2, h3, .panel-title, .modal-title {
 }
 
 /* Keypad Buttons */
-.btn-outline-light { /* Overriding bootstrap/variables.js default */
+.btn-outline-light {
+    /* Overriding bootstrap/variables.js default */
     border-color: var(--secondary-color);
     color: var(--secondary-color);
     background: transparent;
@@ -191,7 +212,8 @@ h1, h2, h3, .panel-title, .modal-title {
     transition: all 0.2s;
 }
 
-.btn-outline-light:hover, .btn-outline-light:active {
+.btn-outline-light:hover,
+.btn-outline-light:active {
     background: var(--secondary-color);
     color: #000;
     box-shadow: 0 0 15px var(--secondary-color);
@@ -210,10 +232,12 @@ h1, h2, h3, .panel-title, .modal-title {
     border-radius: 50%;
     font-family: var(--font-display);
     font-size: 0.8rem;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
 
-.progress-step.active, .progress-step i { /* When icon is present */
+.progress-step.active,
+.progress-step i {
+    /* When icon is present */
     border-color: var(--primary-color);
     color: var(--primary-color);
     box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
@@ -274,16 +298,27 @@ h1, h2, h3, .panel-title, .modal-title {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .glitch-title { font-size: 1.8rem; }
-    .panel-body { padding: 15px; }
-    .btn-outline-light { width: 40px; height: 40px; font-size: 1rem; }
+    .glitch-title {
+        font-size: 1.8rem;
+    }
+
+    .panel-body {
+        padding: 15px;
+    }
+
+    .btn-outline-light {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
 }
 
 /* --- Visualizer --- */
 #visualizer-container {
     position: relative;
     background: #000;
-    height: 400px; /* Fixed height for visualizer */
+    height: 400px;
+    /* Fixed height for visualizer */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -326,4 +361,27 @@ h1, h2, h3, .panel-title, .modal-title {
     font-family: var(--font-display);
     color: var(--text-color);
     letter-spacing: 2px;
+}
+
+/* --- Hack Complete Effect --- */
+.hack-complete {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+    animation: hackPulse 1.5s infinite alternate;
+    letter-spacing: 2px;
+}
+
+@keyframes hackPulse {
+    0% {
+        opacity: 0.8;
+        text-shadow: 0 0 10px var(--primary-color);
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+    }
 }

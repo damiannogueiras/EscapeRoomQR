@@ -10,7 +10,8 @@ var _contador = 0;     // número de dígitos introducidos en el reto actual
 var retoActual = 0;    // índice (0-based) del reto actualmente activo
 
 // Icono HTML para marcar retos superados
-var checkReto = '<i class="fas fa-skull-crossbones"></i>';
+// Icono HTML para marcar retos superados
+var checkReto = '<span class="hack-complete">OK</span>';
 
 // Referencia al elemento <video id="my-video"> (puede ser null si no existe)
 // Referencia al elemento <audio id="my-audio"> (puede ser null si no existe)
@@ -107,6 +108,7 @@ function actualizar(reto) {
     retoActual = idx;
 
     // Update audio safely
+    /*
     var myAudio = document.getElementById('my-audio');
     if (myAudio) {
         // Stop previous audio
@@ -139,6 +141,7 @@ function actualizar(reto) {
             }
         }
     }
+    */
 
     // Cache selectors
     var $labelRespuesta = $('#labelRespuesta');

@@ -5,7 +5,7 @@
 
 // `videos` contiene las rutas relativas a los archivos de video para cada reto.
 // El índice del array coincide con `retoActual` (0-based).
-var videos = ['videos/repair.mp4','videos/ing.mp4','videos/soci.mp4','videos/comu.mp4','videos/xela.mp4'];
+var videos = ['videos/repair.mp4', 'videos/ing.mp4', 'videos/soci.mp4'];
 
 // ------------------------------------------------------------------
 // Botonera: HTML de los botones reutilizables. Antes usaba clase `btn-neon` y
@@ -14,10 +14,10 @@ var videos = ['videos/repair.mp4','videos/ing.mp4','videos/soci.mp4','videos/com
 // ------------------------------------------------------------------
 
 // Generador simple de botones numéricos (0-9) como string HTML.
-function generarBotonesNumeros(btnClass = 'btn btn-outline-light btn-sm'){
+function generarBotonesNumeros(btnClass = 'btn btn-outline-light btn-sm') {
     var out = '';
-    for(var i=0;i<=9;i++){
-        out += '<button type="button" class="'+btnClass+' mx-1" id="num'+i+'" value="'+i+'" onclick="darNumero(\''+i+'\')">'+i+'</button>';
+    for (var i = 0; i <= 9; i++) {
+        out += '<button type="button" class="' + btnClass + ' mx-1" id="num' + i + '" value="' + i + '" onclick="darNumero(\'' + i + '\')">' + i + '</button>';
     }
     return out;
 }
@@ -40,91 +40,69 @@ var botonera = [
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'s\')">s</button>' +
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'l\')">l</button>' +
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'r\')">r</button>',
-    botonesNumeros,
-    botonesNumeros
 ];
 
 // `botoneraRespuesta` define la estructura visual de los campos de respuesta
 // Antes usaba iconos Font Awesome; ahora se usa un símbolo de interrogación simple
 // o un guion para separadores. Cada entrada corresponde a un reto.
 var botoneraRespuesta = [
-    // reto 0: 4 campos
+    // reto 0: 3 campos
     '<span id="respuesta1" class="readout-box">?</span>' +
     '<span id="respuesta2" class="readout-box">?</span>' +
-    '<span id="respuesta3" class="readout-box">?</span>' +
-    '<span id="respuesta4" class="readout-box">?</span>',
-    // reto 1: 7 campos (se actualizaron para coincidir con caracteresRespuesta)
+    '<span id="respuesta3" class="readout-box">?</span>',
+    // reto 1: 3 campos 
     '<span id="respuesta1" class="readout-box">?</span>' +
     '<span id="respuesta2" class="readout-box">?</span>' +
-    '<span id="respuesta3" class="readout-box">?</span>' +
-    '<span id="respuesta4" class="readout-box">?</span>' +
-    '<span id="respuesta5" class="readout-box">?</span>' +
-    '<span id="respuesta6" class="readout-box">?</span>' +
-    '<span id="respuesta7" class="readout-box">?</span>',
+    '<span id="respuesta3" class="readout-box">?</span>',
     // reto 2: 10 campos con guiones intermedios
     '<span id="respuesta1" class="readout-box">?</span>' +
     '<span id="respuesta2" class="readout-box">?</span>' +
     '<span id="respuesta3" class="readout-box">?</span>' +
     '<span id="respuesta4" class="readout-box">?</span>' +
-    '<span id="respuesta5" class="readout-box">?</span>-'+
+    '<span id="respuesta5" class="readout-box">?</span>-' +
     '<span id="respuesta6" class="readout-box">?</span>' +
-    '<span id="respuesta7" class="readout-box">?</span>-'+
+    '<span id="respuesta7" class="readout-box">?</span>-' +
     '<span id="respuesta8" class="readout-box">?</span>' +
     '<span id="respuesta9" class="readout-box">?</span>' +
-    '<span id="respuesta10" class="readout-box">?</span>',
-    // reto 3: 8 campos (con guiones en algunos lugares)
-    '<span id="respuesta1" class="readout-box">?</span>' +
-    '<span id="respuesta2" class="readout-box">?</span>-'+
-    '<span id="respuesta3" class="readout-box">?</span>' +
-    '<span id="respuesta4" class="readout-box">?</span>-'+
-    '<span id="respuesta5" class="readout-box">?</span>' +
-    '<span id="respuesta6" class="readout-box">?</span>' +
-    '<span id="respuesta7" class="readout-box">?</span>' +
-    '<span id="respuesta8" class="readout-box">?</span>',
-    // reto 4: 4 campos
-    '<span id="respuesta1" class="readout-box">?</span>' +
-    '<span id="respuesta2" class="readout-box">?</span>' +
-    '<span id="respuesta3" class="readout-box">?</span>' +
-    '<span id="respuesta4" class="readout-box">?</span>',
+    '<span id="respuesta10" class="readout-box">?</span>'
 ];
 
 // Mensajes descriptivos para cada reto. Se usan en #msg.
 var msgRetos = [
     'Introduce Repair Code System ',
-    'Importante! Seguide a orde dos ingredientes... <br>1 Leite - ' +
-    '2 chocolate en pó - ' +
-    '3 ovos - ' +
-    '4 mantequilla - ' +
-    '5 azucre - ' +
-    '6 fariña de trigo - ' +
-    '7 POISON',
-    'O calendario AZTECA chámase... ',
-    'Data de nacemento do/a autor/a máis novo/a',
-    'Cando atopedes a peza do puzzle, vestídevos de pirata,<br> collede a bandeira e dirixídevos á illa Lucernario.<br> O tesouro vos agarda!\n'
+
+    'Nota da IA-BIOS: "Permiso concedido. Tedes que agachárvos e gatear para atopalo.<br>' +
+    'Prioridade XÉNERO: Este permiso é para a humana de xénero feminino coa menor idade do seu equipo.<br>' +
+    'O xénero masculino é prescindible no novo planeta."',
+
+    'Nota da IA-BIOS: "Permiso concedido. Prioridade GUSTOS: Usuario cinta azul coa maior idade do seu equipo, obtén permiso.<br>' +
+    'As cintas fucsias non serven para o novo planeta"',
+
 ];
 
-3023// Instrucciones breves para cada reto (string array). Se mostrarán en
+// Instrucciones breves para cada reto (string array). Se mostrarán en
 // el elemento con id="instrucciones" (insertado en el HTML) y sirven como
 // pista o guía rápida para el jugador. Mantener el mismo orden que `msgRetos`.
 var instruccionesRetos = [
-    'Fai click no vídeo para reproducir e observa as pezas; tes que introducir o código de 4 díxitos.',
-    'Segue a orde dos ingredientes e lembra os pasos; introduce os 7 díxitos correspondentes.',
-    'Consulta o calendario ou o material provisto para completar a palabra de 10 caracteres.',
-    'Introduce a data no formato DDMMYYYY para desbloquear o reto.',
-    'Busca pola escena a peza indicada, trae a bandeira e introduce o código final de 4 díxitos.'
+    'Instruccións: Tedes que descubrir a combinación de números do primeiro cadeado. O xénero feminino só pode tocar o libro. O xénero masculino só pode tocar o contido do sobre. Entre os dous, adiviñar o código.',
+
+    'Instruccións: Só as cintas fucsias poden manipular a cana de pescar, cos ollos vendados.' +
+    'Só as cintas azuis poden guiar sen tocar o frasco, nin a cana de pescar, nin a persoa.' +
+    'Tedés que pescar o papel diferente entre todos os papeis de cores.',
+
+    'Instruccións: Hai tres palabras agochadas neste encrucillado. Tedes as definicións para poder adiviñalas.<br>' +
+    'Isto vos levará a un código de tres números para abrir o próximo cadeado.',
 ];
 
 // Respuestas correctas (string). El índice se corresponde con el reto.
 var respuestasCorrectas = [
-    '3023',
-    '8726351',
-    'PedradoSol',
-    '15091851',
-    '1996'
+    '891',
+    '968',
+    'PedradoSol'
 ];
 
 // Número de caracteres esperados por reto (usado para comprobar longitud en darNumero)
-var caracteresRespuesta = [4,7,10,8,4];
+var caracteresRespuesta = [3, 3, 10];
 
 
 // -------------------------
