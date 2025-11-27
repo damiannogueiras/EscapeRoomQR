@@ -51,17 +51,31 @@ function darNumero(numero) {
 
     if (_contador >= longitudEsperada && _respuesta === respuestaCorrecta) {
         // Respuesta correcta
-        $('#feito').modal('show');
         var $retoEl = $('#reto' + retoActual);
         if ($retoEl && $retoEl[0]) { $retoEl[0].innerHTML = checkReto; }
 
         // Avanzar al siguiente reto
         retoActual = retoActual + 1;
+
+        // Check if this was the last challenge
+        if (typeof caracteresRespuesta !== 'undefined' && retoActual >= caracteresRespuesta.length) {
+            // Last challenge completed - show virus alert and play audio
+            $('#virus').modal('show');
+            var virusAudio = new Audio('audios/prohibiendo.mp3');
+            virusAudio.play().catch(error => {
+                console.log('Audio play prevented:', error);
+            });
+        } else {
+            // Not the last challenge - show normal success modal
+            $('#feito').modal('show');
+        }
+
         actualizar(retoActual);
 
         // Reset para el nuevo reto
         _contador = 0;
         _respuesta = '';
+
 
     } else if (_contador >= longitudEsperada && _respuesta !== respuestaCorrecta) {
         // Respuesta incorrecta

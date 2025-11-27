@@ -30,16 +30,19 @@ var botonera = [
     botonesNumeros, // reto 0 usa 0-9
     botonesNumeros, // reto 1 usa 0-9
     // reto 2 usa botones con caracteres (alfanuméricos personalizados)
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'e\')">e</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'o\')">o</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'S\')">S</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'a\')">a</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'I\')">I</button>' +
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'P\')">P</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'d\')">d</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'w\')">w</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'s\')">s</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'l\')">l</button>' +
-    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'r\')">r</button>',
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'O\')">O</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'A\')">A</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'U\')">U</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'C\')">C</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'D\')">D</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'W\')">W</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'R\')">R</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'Z\')">Z</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'L\')">L</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'T\')">T</button>' +
+    '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'R\')">R</button>',
 ];
 
 // `botoneraRespuesta` define la estructura visual de los campos de respuesta
@@ -80,8 +83,8 @@ var msgRetos = [
 
 // Mensajes descitivos para la entrada de codigo se usa en #entrada
 var msgEntrada = [
-    'Introduce Code System ',
-    'Introduce Code Journey ',
+    'Introduce Code Separate ',
+    'Introduce Code Different ',
     'Introduce Code Person ',
 ];
 
