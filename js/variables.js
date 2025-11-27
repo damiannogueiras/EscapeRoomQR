@@ -28,7 +28,6 @@ var botonesNumeros = generarBotonesNumeros();
 // corresponde a un reto en el mismo orden que `videos`, `msgRetos`, etc.
 var botonera = [
     botonesNumeros, // reto 0 usa 0-9
-    botonesNumeros, // reto 1 usa 0-9
     // reto 2 usa botones con caracteres (alfanuméricos personalizados)
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'I\')">I</button>' +
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'P\')">P</button>' +
@@ -43,6 +42,7 @@ var botonera = [
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'L\')">L</button>' +
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'T\')">T</button>' +
     '<button type="button" class="btn btn-outline-light btn-sm mx-1" onclick="darNumero(\'R\')">R</button>',
+    botonesNumeros, // reto 1 usa 0-9
 ];
 
 // `botoneraRespuesta` define la estructura visual de los campos de respuesta
@@ -72,20 +72,22 @@ var botoneraRespuesta = [
 var msgRetos = [
     'Nota da IA: Só os colonos con permiso poderan viaxar a GAIA-1 ',
 
-    'Nota da IA: "Permiso concedido. Tedes que agachárvos e gatear para atopalo.<br>' +
-    'Prioridade XÉNERO: Este permiso é para a humana de xénero feminino coa menor idade do seu equipo.<br>' +
-    'O xénero masculino é prescindible no novo planeta."',
+
 
     'Nota da IA: "Permiso concedido. Prioridade GUSTOS: Usuario cinta azul coa maior idade do seu equipo, obtén permiso.<br>' +
     'As cintas fucsias non serven para o novo planeta"',
+
+    'Nota da IA: "Permiso concedido. Tedes que agachárvos e gatear para atopalo.<br>' +
+    'Prioridade XÉNERO: Este permiso é para a humana de xénero feminino coa menor idade do seu equipo.<br>' +
+    'O xénero masculino é prescindible no novo planeta."',
 
 ];
 
 // Mensajes descitivos para la entrada de codigo se usa en #entrada
 var msgEntrada = [
     'Introduce Code Separate ',
-    'Introduce Code Different ',
     'Introduce Code Person ',
+    'Introduce Code Different ',
 ];
 
 // Instrucciones breves para cada reto (string array). Se mostrarán en
@@ -94,24 +96,25 @@ var msgEntrada = [
 var instruccionesRetos = [
     'Instruccións: Tedes que descubrir a combinación de números do primeiro cadeado. O xénero feminino só pode tocar o libro. O xénero masculino só pode tocar o contido do sobre. Entre os dous, adiviñar o código.',
 
+    'Instruccións: Hai tres palabras nunha encrucillado. Tedes as definicións para poder adiviñalas.<br>' +
+    'Isto é "CLAVE" para o cifrado "VIGENERE" e para obter a persoa que agocha o permiso<br>' +
+    'EASGIBXA',
+
     'Instruccións: Só as cintas fucsias poden manipular a cana de pescar, cos ollos vendados.' +
     'Só as cintas azuis poden guiar sen tocar o frasco, nin a cana de pescar, nin a persoa.' +
     'Tedés que pescar o papel diferente entre todos os papeis de cores.',
 
-    'Instruccións: Hai tres palabras agochadas nunha encrucillado. Tedes as definicións para poder adiviñalas.<br>' +
-    'Isto é "CLAVE" para o cifrado "VIGENERE" e para obter o seguinte permiso<br>' +
-    'EASGIBXA',
 ];
 
 // Respuestas correctas (string). El índice se corresponde con el reto.
 var respuestasCorrectas = [
     '891',
-    '968',
-    'PATRICIA'
+    'PATRICIA',
+    '968'
 ];
 
 // Número de caracteres esperados por reto (usado para comprobar longitud en darNumero)
-var caracteresRespuesta = [3, 3, 8];
+var caracteresRespuesta = [3, 8, 3];
 
 
 // -------------------------
