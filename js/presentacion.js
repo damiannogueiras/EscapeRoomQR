@@ -72,7 +72,7 @@ function darNumero(numero) {
                 virusAudio.play().catch(error => {
                     console.log('Audio play prevented:', error);
                 });
-            }, 15000); // 15 second delay
+            }, 30000); // 30 second delay
         } else {
             // Not the last challenge - show normal success modal
             $('#feito').modal('show');
