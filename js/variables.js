@@ -53,10 +53,6 @@ var botoneraRespuesta = [
     '<span id="respuesta1" class="readout-box">?</span>' +
     '<span id="respuesta2" class="readout-box">?</span>' +
     '<span id="respuesta3" class="readout-box">?</span>',
-    // reto 1: 3 campos 
-    '<span id="respuesta1" class="readout-box">?</span>' +
-    '<span id="respuesta2" class="readout-box">?</span>' +
-    '<span id="respuesta3" class="readout-box">?</span>',
     // reto 2: 10 campos con guiones intermedios
     '<span id="respuesta1" class="readout-box">?</span>' +
     '<span id="respuesta2" class="readout-box">?</span>' +
@@ -65,7 +61,14 @@ var botoneraRespuesta = [
     '<span id="respuesta5" class="readout-box">?</span>' +
     '<span id="respuesta6" class="readout-box">?</span>' +
     '<span id="respuesta7" class="readout-box">?</span>' +
-    '<span id="respuesta8" class="readout-box">?</span>'
+    '<span id="respuesta8" class="readout-box">?</span>',
+    // reto 1: 3 campos 
+    '<span id="respuesta1" class="readout-box">?</span>' +
+    '<span id="respuesta2" class="readout-box">?</span>' +
+    '<span id="respuesta3" class="readout-box">?</span>',
+    // reto final
+    '<span>.</span>'
+
 ];
 
 // Mensajes descriptivos para cada reto. Se usan en #msg.
@@ -76,6 +79,8 @@ var msgRetos = [
 
     'Nota da IA: "Permiso concedido. Prioridade GUSTOS: Usuario cinta azul coa maior idade do seu equipo, obtén permiso.<br>' +
     'As cintas fucsias non serven para o novo planeta"',
+
+    'Nota da IA: Alerta. Detección de colonos rebeldes.',
 
     'Nota da IA: "Permiso concedido. Tedes que agachárvos e gatear para atopalo.<br>' +
     'Prioridade XÉNERO: Este permiso é para a humana de xénero feminino coa menor idade do seu equipo.<br>' +
@@ -88,6 +93,7 @@ var msgEntrada = [
     'Introduce Code Separate ',
     'Introduce Code Person ',
     'Introduce Code Different ',
+    'Non hai sitio en GAIA-1'
 ];
 
 // Instrucciones breves para cada reto (string array). Se mostrarán en

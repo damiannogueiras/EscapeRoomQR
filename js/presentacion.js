@@ -59,12 +59,14 @@ function darNumero(numero) {
 
         // Check if this was the last challenge
         if (typeof caracteresRespuesta !== 'undefined' && retoActual >= caracteresRespuesta.length) {
-            // Last challenge completed - show virus alert and play audio
-            $('#virus').modal('show');
-            var virusAudio = new Audio('audios/prohibiendo.mp3');
-            virusAudio.play().catch(error => {
-                console.log('Audio play prevented:', error);
-            });
+            // Last challenge completed - show virus alert and play audio after delay
+            setTimeout(function () {
+                $('#virus').modal('show');
+                var virusAudio = new Audio('audios/prohibiendo.mp3');
+                virusAudio.play().catch(error => {
+                    console.log('Audio play prevented:', error);
+                });
+            }, 15000); // 15 second delay
         } else {
             // Not the last challenge - show normal success modal
             $('#feito').modal('show');
