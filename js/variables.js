@@ -104,7 +104,7 @@ var instruccionesRetos = [
 
     'Instruccións: Hai tres palabras nunha encrucillado. Tedes as definicións para poder adiviñalas.<br>' +
     'Isto é "CLAVE" para o cifrado "VIGENERE" e para obter a persoa que agocha o permiso<br>' +
-    'EASGIBXA',
+    '🍓🍎🔒🍒🍍🍌🐾🍎 EASGIBXA',
 
     'Instruccións: Só as cintas fucsias poden manipular a cana de pescar, cos ollos vendados.' +
     'Só as cintas azuis poden guiar sen tocar o frasco, nin a cana de pescar, nin a persoa.' +

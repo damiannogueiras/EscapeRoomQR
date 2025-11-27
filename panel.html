@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,19 +14,37 @@
 
     <style>
         /* Pantalla centrada con ratio 16:9 y ocupando lo máximo posible del viewport */
-        :root{
+        :root {
             --gap: 6px;
-            --bg1: linear-gradient(135deg,#030014 0%, #0f0f2a 50%, #001f3f 100%);
+            --bg1: linear-gradient(135deg, #030014 0%, #0f0f2a 50%, #001f3f 100%);
             --accent: #39ff14;
-            --cell-border: rgba(57,255,20,0.12);
+            --cell-border: rgba(57, 255, 20, 0.12);
         }
-        html,body{height:100%;margin:0;font-family: 'Orbitron', sans-serif;background:radial-gradient(circle at 10% 10%, rgba(57,255,20,0.06), transparent 10%), var(--bg1);color:#e6f7ff}
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            background: radial-gradient(circle at 10% 10%, rgba(57, 255, 20, 0.06), transparent 10%), var(--bg1);
+            color: #e6f7ff
+        }
+
         /* La pantalla ahora apila el mensaje y el panel (columna) */
-        .screen{
-            position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;box-sizing:border-box;gap:8px;
+        .screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            box-sizing: border-box;
+            gap: 8px;
         }
+
         /* Mensaje encima del panel que ocupa 1/16 de la altura del viewport */
-        #mensaje{
+        #mensaje {
             height: calc(100vh / 16);
             min-height: 28px;
             /* tener en cuenta el padding lateral de .screen (32px * 2 = 64px) */
@@ -33,21 +52,27 @@
             /* aumentar padding interno a 32px */
             padding: 32px;
             box-sizing: border-box;
-            display:flex;align-items:center;justify-content:center;
-            background: rgba(0,0,0,0.35);
-            border-radius:6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 6px;
             color: var(--accent);
-            border: 1px solid rgba(57,255,20,0.08);
-            font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:clamp(20px,2.5vh,28px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset, 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(57, 255, 20, 0.08);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: clamp(20px, 2.5vh, 28px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) inset, 0 2px 10px rgba(0, 0, 0, 0.5);
         }
+
         /* Caja que mantiene 16:9 y escala dentro del viewport */
-        .panel{
+        .panel {
             /* tener en cuenta el padding lateral de .screen */
             width: min(calc(100vh * 16 / 9), calc(100vw - 64px));
             aspect-ratio: 16 / 9;
-            background: rgba(0,0,0,0.45);
-            box-shadow: 0 10px 60px rgba(0,0,0,0.6), 0 0 40px rgba(57,255,20,0.06) inset;
+            background: rgba(0, 0, 0, 0.45);
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(57, 255, 20, 0.06) inset;
             border-radius: 8px;
             padding: 10px;
             box-sizing: border-box;
@@ -55,365 +80,430 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(4, 1fr);
             gap: var(--gap);
-            border: 1px solid rgba(57,255,20,0.06);
+            border: 1px solid rgba(57, 255, 20, 0.06);
         }
-        .cell{
-            position:relative;overflow:hidden;border-radius:4px;cursor:pointer;outline:none;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
-            display:flex;align-items:center;justify-content:center;transition: transform .12s ease, box-shadow .12s ease;
+
+        .cell {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.08));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .12s ease, box-shadow .12s ease;
             border: 1px solid var(--cell-border);
         }
-        .cell:focus{box-shadow: 0 0 0 3px rgba(57,255,20,0.12), 0 6px 20px rgba(0,0,0,0.6);}
-        .cell:hover{transform: translateY(-2px);}
-        .cell img{width:100%;height:100%;object-fit:contain;display:block;background:rgba(0,0,0,0.04);}
-        .cell .overlay{
-            position:absolute;left:6px;top:6px;padding:4px 6px;border-radius:4px;background:rgba(0,0,0,0.45);color:var(--accent);font-size:12px;backdrop-filter: blur(4px);
+
+        .cell:focus {
+            box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.12), 0 6px 20px rgba(0, 0, 0, 0.6);
         }
+
+        .cell:hover {
+            transform: translateY(-2px);
+        }
+
+        .cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .cell .overlay {
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.45);
+            color: var(--accent);
+            font-size: 12px;
+            backdrop-filter: blur(4px);
+        }
+
         /* Controles visibles siempre, pequeños y en la esquina inferior izquierda */
-        .controls{
-            position:absolute;left:12px;bottom:12px;z-index:50;display:flex;gap:6px;align-items:center;transform:translateZ(0);
+        .controls {
+            position: absolute;
+            left: 12px;
+            bottom: 12px;
+            z-index: 50;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            transform: translateZ(0);
         }
-        .btn-ghost{
-            background:transparent;border:1px solid rgba(57,255,20,0.14);color:var(--accent);padding:6px 8px;border-radius:6px;font-size:12px;cursor:pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(57, 255, 20, 0.14);
+            color: var(--accent);
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
-        @media (max-width:640px){
-            .panel{gap:4px;padding:6px}
-            .cell .overlay{font-size:11px}
+
+        @media (max-width:640px) {
+            .panel {
+                gap: 4px;
+                padding: 6px
+            }
+
+            .cell .overlay {
+                font-size: 11px
+            }
         }
+
         /* (Controles siempre visibles; responsive adjustments no necesarios) */
     </style>
 </head>
+
 <body>
-<div class="screen">
-    <!-- Mensaje sobre el panel: ocupa 1/16 de la altura del viewport -->
-    <div id="mensaje">PERMISOS DISPONIBLES</div>
-    <div class="panel" id="panel" role="grid" aria-label="Panel 8 por 4">
-        <!-- Las 32 celdas se generan por JavaScript dinámicamente -->
+    <div class="screen">
+        <!-- Mensaje sobre el panel: ocupa 1/16 de la altura del viewport -->
+        <div id="mensaje">PERMISOS DISPONIBLES</div>
+        <div class="panel" id="panel" role="grid" aria-label="Panel 8 por 4">
+            <!-- Las 32 celdas se generan por JavaScript dinámicamente -->
+        </div>
+
+        <!-- Plantilla oculta (ejemplo estático) para que analizadores detecten uso de .cell/.overlay -->
+        <template id="cell-template" hidden>
+            <button type="button" class="cell" aria-hidden="true">
+                <img src="images/permiso_X.png" alt="">
+                <span class="overlay">X</span>
+            </button>
+        </template>
+
+        <div class="controls" aria-hidden="false">
+            <button id="shuffle" class="btn-ghost" title="Prohibir permisos">Prohibir</button>
+            <button id="reset" class="btn-ghost" title="Restablecer a la primera imagen">Reset</button>
+        </div>
     </div>
 
-    <!-- Plantilla oculta (ejemplo estático) para que analizadores detecten uso de .cell/.overlay -->
-    <template id="cell-template" hidden>
-        <button type="button" class="cell" aria-hidden="true">
-            <img src="images/permiso_X.png" alt="">
-            <span class="overlay">X</span>
-        </button>
-    </template>
+    <!-- Audio para la acción de prohibir -->
+    <!-- Si no hay 'prohibiendo.mp3', usamos un audio existente ('oceano.wav') como fallback -->
+    <audio id="audio-prohibiendo" src="audios/oceano.wav" preload="auto"></audio>
 
-    <div class="controls" aria-hidden="false">
-        <button id="shuffle" class="btn-ghost" title="Prohibir permisos">Prohibir</button>
-        <button id="reset" class="btn-ghost" title="Restablecer a la primera imagen">Reset</button>
-    </div>
-</div>
-
-<!-- Audio para la acción de prohibir -->
-<!-- Si no hay 'prohibiendo.mp3', usamos un audio existente ('oceano.wav') como fallback -->
-<audio id="audio-prohibiendo" src="audios/oceano.wav" preload="auto"></audio>
-
-<!-- Bloque oculto (no visible) que referencia directamente las clases usadas en CSS
+    <!-- Bloque oculto (no visible) que referencia directamente las clases usadas en CSS
      Esto evita warnings de "selector never used" para herramientas estáticas. -->
-<div style="display:none;" aria-hidden="true">
-    <div class="cell">
-        <img src="" alt="">
-        <span class="overlay">1</span>
+    <div style="display:none;" aria-hidden="true">
+        <div class="cell">
+            <img src="" alt="">
+            <span class="overlay">1</span>
+        </div>
     </div>
-</div>
 
-<script>
-    // Lista de imágenes disponibles en la carpeta images/
-    // Si quieres añadir más imágenes, colócalas en la carpeta images y añádelas aquí.
-    const IMAGES = [
-        'images/permiso_X.png',
-        'images/permiso_vacio.png',
-        'images/permiso_OK.png'
-    ];
+    <script>
+        // Lista de imágenes disponibles en la carpeta images/
+        // Si quieres añadir más imágenes, colócalas en la carpeta images y añádelas aquí.
+        const IMAGES = [
+            'images/permiso_X.png',
+            'images/permiso_vacio.png',
+            'images/permiso_OK.png'
+        ];
 
-    // identiicacion de indices
-    const PERMISO_X = 0;
-    const PERMISO_VACIO = 1;
-    const PERMISO_OK = 2;
+        // identiicacion de indices
+        const PERMISO_X = 0;
+        const PERMISO_VACIO = 1;
+        const PERMISO_OK = 2;
 
-    // tamaño del panel
-    const COLS = 8;
-    const ROWS = 4;
+        // tamaño del panel
+        const COLS = 8;
+        const ROWS = 4;
 
-    // secuencia de celdas que son el código para limpiar virus
-    const CODIGO_SECRETO = [
-        'A1','B3','C2','D4','D5'
-    ];
+        // secuencia de celdas que son el código para limpiar virus
+        const CODIGO_SECRETO = [
+            'A1', 'B3', 'C2', 'D4', 'D5'
+        ];
 
-    // fallos maximos para acertar el codigo secreto
-    const MAX_FALLOS = 3;
-    // fallos actuales
-    let fallos = 0;
+        // fallos maximos para acertar el codigo secreto
+        const MAX_FALLOS = 3;
+        // fallos actuales
+        let fallos = 0;
 
-    // contador numero aciertos codigo secreto
-    let contador = 0;
+        // contador numero aciertos codigo secreto
+        let contador = 0;
 
-    const PANEL = document.getElementById('panel');
+        const PANEL = document.getElementById('panel');
 
-    // Crea las celdas con una imagen inicial y un índice para rastrear la imagen actual
-    function createGrid(){
-        // Vacía el panel por si ya existieran celdas
-        PANEL.innerHTML = '';
+        // Crea las celdas con una imagen inicial y un índice para rastrear la imagen actual
+        function createGrid() {
+            // Vacía el panel por si ya existieran celdas
+            PANEL.innerHTML = '';
 
-        // Crear celdas en orden fila-major con identificadores tipo A1, A2, ..., B1, B2, ...
-        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        for (let r = 0; r < ROWS; r++) {
-            const rowLetter = letters[r] || String.fromCharCode(65 + r);
-            for (let c = 1; c <= COLS; c++) {
-                const coord = `${rowLetter}${c}`;
-                const cell = document.createElement('button');
-                cell.type = 'button';
-                cell.className = 'cell';
-                cell.setAttribute('role','gridcell');
-                // identificamos el boton con coordenadas (A1, A2, ...)
-                cell.setAttribute('aria-label', `${coord}`);
-                // Inicializamos todas las celdas en estado 'permiso_vacio' (IMAGES[1])
-                const initial = PERMISO_VACIO; // 1 => permiso_vacio, 0 => permiso_X
+            // Crear celdas en orden fila-major con identificadores tipo A1, A2, ..., B1, B2, ...
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let r = 0; r < ROWS; r++) {
+                const rowLetter = letters[r] || String.fromCharCode(65 + r);
+                for (let c = 1; c <= COLS; c++) {
+                    const coord = `${rowLetter}${c}`;
+                    const cell = document.createElement('button');
+                    cell.type = 'button';
+                    cell.className = 'cell';
+                    cell.setAttribute('role', 'gridcell');
+                    // identificamos el boton con coordenadas (A1, A2, ...)
+                    cell.setAttribute('aria-label', `${coord}`);
+                    // Inicializamos todas las celdas en estado 'permiso_vacio' (IMAGES[1])
+                    const initial = PERMISO_VACIO; // 1 => permiso_vacio, 0 => permiso_X
+                    cell.dataset.imgIndex = String(initial);
+
+                    const img = document.createElement('img');
+                    img.src = IMAGES[initial];
+                    img.alt = `Permiso vacio`;
+
+                    const overlay = document.createElement('span');
+                    overlay.className = 'overlay';
+                    overlay.textContent = coord;
+
+                    cell.appendChild(img);
+                    cell.appendChild(overlay);
+
+                    // Al hacer click, coprueba codio secreto
+                    cell.addEventListener('click', () => {
+                        // const current = Number(cell.dataset.imgIndex) || 0;
+                        // Comprueba si se clickea bien el codigo secreto si no aviso de fallo y muestra fallos restantes
+                        if (fallos <= MAX_FALLOS) {
+                            // si la celda coincide con el CODIGO_SECRETO
+                            // cambiar a permiso_OK y sumar uno a contador; de lo contrario, cambiar a permiso_X
+                            if (CODIGO_SECRETO.includes(coord)) {
+                                cell.dataset.imgIndex = String(PERMISO_OK);
+                                img.src = IMAGES[PERMISO_OK];
+                                img.alt = `Permiso OK`;
+                                console.log(`Acertaste ${coord}`);
+                                contador++;
+                            } else {
+                                cell.dataset.imgIndex = String(PERMISO_X);
+                                img.src = IMAGES[PERMISO_X];
+                                img.alt = `Permiso X`;
+                                fallos++;
+                                console.log(`Fallo ${fallos}`);
+                                const mensajeEl = document.getElementById('mensaje');
+                                mensajeEl.textContent = `TE QUEDA ${(MAX_FALLOS - fallos)} FALLOS`
+                            }
+                        }
+
+                        if (fallos === MAX_FALLOS) {
+                            finJuego(false)
+                        }
+                        // si contador es igual a CODIGO_SECRETO.length, se acierta el codigo secreto
+                        // FIN del juego
+                        if (contador === CODIGO_SECRETO.length) {
+                            finJuego(true)
+                        }
+                    });
+
+                    PANEL.appendChild(cell);
+                }
+            }
+        }
+
+
+
+        // fin del juego
+        function finJuego(ganador) {
+            // mensaje
+            const mensajeEl = document.getElementById('mensaje');
+            if (ganador) {
+                mensajeEl.textContent = "GAÑASTES!"
+                // Reproducir audio de victoria
+                var winAudio = new Audio('audios/win.mpeg');
+                winAudio.play().catch(error => {
+                    console.log('Audio play prevented:', error);
+                });
+            } else {
+                mensajeEl.textContent = "GAME OVER"
+                // Reproducir audio de derrota
+                var loseAudio = new Audio('audios/lose.mpeg');
+                loseAudio.play().catch(error => {
+                    console.log('Audio play prevented:', error);
+                });
+            }
+        }
+
+        // Restablece todas las celdas a la primera imagen
+        function resetGrid() {
+            const cells = Array.from(PANEL.children);
+            // Restablecer todas las celdas a 'permiso_vacio'
+            cells.forEach((cell) => {
+                const img = cell.querySelector('img');
+                const initial = 1; // permiso_vacio
                 cell.dataset.imgIndex = String(initial);
-
-                const img = document.createElement('img');
                 img.src = IMAGES[initial];
                 img.alt = `Permiso vacio`;
+            });
+        }
 
-                const overlay = document.createElement('span');
-                overlay.className = 'overlay';
-                overlay.textContent = coord;
+        // =====================================================
+        // Funcionalidad 'Prohibir'
+        // Cada intervalo convierte aleatoriamente un permiso_vacio en permiso_X
+        // hasta que queden exactamente target permisos_vacios.
+        // =====================================================
+        let prohibitionInterval = null;
+        const PROHIBITION_INTERVAL_MS = 1000;
+        const TARGET_EMPTY_PERMISSIONS = 10;
 
-                cell.appendChild(img);
-                cell.appendChild(overlay);
+        function countEmptyPermissions() {
+            const cells = Array.from(PANEL.querySelectorAll('.cell'));
+            return cells.reduce((acc, c) => acc + ((
+                c.dataset.imgIndex === PERMISO_VACIO.toString() || c.querySelector('img').src.includes('permiso_vacio')) ? PERMISO_VACIO : PERMISO_X), PERMISO_X);
+        }
 
-                // Al hacer click, coprueba codio secreto
-                cell.addEventListener('click', ()=>{
-                    // const current = Number(cell.dataset.imgIndex) || 0;
-                    // Comprueba si se clickea bien el codigo secreto si no aviso de fallo y muestra fallos restantes
-                    if(fallos <= MAX_FALLOS){
-                        // si la celda coincide con el CODIGO_SECRETO
-                        // cambiar a permiso_OK y sumar uno a contador; de lo contrario, cambiar a permiso_X
-                        if (CODIGO_SECRETO.includes(coord)) {
-                            cell.dataset.imgIndex = String(PERMISO_OK);
-                            img.src = IMAGES[PERMISO_OK];
-                            img.alt = `Permiso OK`;
-                            console.log(`Acertaste ${coord}`);
-                            contador++;
-                        } else {
-                            cell.dataset.imgIndex = String(PERMISO_X);
-                            img.src = IMAGES[PERMISO_X];
-                            img.alt = `Permiso X`;
-                            fallos++;
-                            console.log(`Fallo ${fallos}`);
-                            const mensajeEl = document.getElementById('mensaje');
-                            mensajeEl.textContent = `TE QUEDA ${(MAX_FALLOS - fallos)} FALLOS`
-                        }
-                    }
+        function pickRandomEmptyCell() {
+            const empties = Array.from(PANEL.querySelectorAll('.cell')).filter(c => (c.dataset.imgIndex === PERMISO_VACIO.toString() || c.querySelector('img').src.includes('permiso_vacio')));
+            if (empties.length === 0) return null;
+            return empties[Math.floor(Math.random() * empties.length)];
+        }
 
-                    if (fallos === MAX_FALLOS){
-                        finJuego(false)
-                    }
-                    // si contador es igual a CODIGO_SECRETO.length, se acierta el codigo secreto
-                    // FIN del juego
-                    if (contador === CODIGO_SECRETO.length) {
-                        finJuego(true)
-                    }
-                });
+        function startProhibition() {
+            const btn = document.getElementById('shuffle');
+            const mensajeEl = document.getElementById('mensaje');
+            const audio = document.getElementById('audio-prohibiendo');
+            if (prohibitionInterval) return; // ya en marcha
 
-                PANEL.appendChild(cell);
+            // Si ya hay <= TARGET_EMPTY_PERMISSIONS, no hacer nada
+            let emptyCount = countEmptyPermissions();
+            if (emptyCount <= TARGET_EMPTY_PERMISSIONS) {
+                btn.setAttribute('disabled', 'true');
+                btn.textContent = 'Prohibido';
+                if (mensajeEl) mensajeEl.textContent = `PROHIBIDO — quedan ${emptyCount} permisos`;
+                return;
             }
-        }
-    }
 
-
-
-    // fin del juego
-    function finJuego(ganador){
-        // mensaje
-        const mensajeEl = document.getElementById('mensaje');
-        if (ganador) {
-            mensajeEl.textContent = "GANASTE"
-        } else {
-            mensajeEl.textContent = "PERDISTE"
-        }
-    }
-
-    // Restablece todas las celdas a la primera imagen
-    function resetGrid(){
-        const cells = Array.from(PANEL.children);
-        // Restablecer todas las celdas a 'permiso_vacio'
-        cells.forEach((cell) => {
-            const img = cell.querySelector('img');
-            const initial = 1; // permiso_vacio
-            cell.dataset.imgIndex = String(initial);
-            img.src = IMAGES[initial];
-            img.alt = `Permiso vacio`;
-        });
-    }
-
-    // =====================================================
-    // Funcionalidad 'Prohibir'
-    // Cada intervalo convierte aleatoriamente un permiso_vacio en permiso_X
-    // hasta que queden exactamente target permisos_vacios.
-    // =====================================================
-    let prohibitionInterval = null;
-    const PROHIBITION_INTERVAL_MS = 1000;
-    const TARGET_EMPTY_PERMISSIONS = 10;
-
-    function countEmptyPermissions(){
-        const cells = Array.from(PANEL.querySelectorAll('.cell'));
-        return cells.reduce((acc, c) => acc + ((
-            c.dataset.imgIndex === PERMISO_VACIO.toString() || c.querySelector('img').src.includes('permiso_vacio')) ? PERMISO_VACIO : PERMISO_X), PERMISO_X);
-    }
-
-    function pickRandomEmptyCell(){
-        const empties = Array.from(PANEL.querySelectorAll('.cell')).filter(c => (c.dataset.imgIndex === PERMISO_VACIO.toString() || c.querySelector('img').src.includes('permiso_vacio')));
-        if(empties.length === 0) return null;
-        return empties[Math.floor(Math.random() * empties.length)];
-    }
-
-    function startProhibition(){
-        const btn = document.getElementById('shuffle');
-        const mensajeEl = document.getElementById('mensaje');
-        const audio = document.getElementById('audio-prohibiendo');
-        if(prohibitionInterval) return; // ya en marcha
-
-        // Si ya hay <= TARGET_EMPTY_PERMISSIONS, no hacer nada
-        let emptyCount = countEmptyPermissions();
-        if(emptyCount <= TARGET_EMPTY_PERMISSIONS){
+            // Indicar estado y deshabilitar mientras corre
             btn.setAttribute('disabled', 'true');
-            btn.textContent = 'Prohibido';
-            if(mensajeEl) mensajeEl.textContent = `PROHIBIDO — quedan ${emptyCount} permisos`;
-            return;
-        }
+            btn.textContent = 'Prohibiendo...';
+            if (mensajeEl) mensajeEl.textContent = `PROHIBIENDO... quedan ${emptyCount} permisos`;
 
-        // Indicar estado y deshabilitar mientras corre
-        btn.setAttribute('disabled', 'true');
-        btn.textContent = 'Prohibiendo...';
-        if(mensajeEl) mensajeEl.textContent = `PROHIBIENDO... quedan ${emptyCount} permisos`;
+            // Intentar reproducir sonido (si existe). La reproducción suele estar permitida
+            // porque el usuario ha hecho click en el botón.
+            if (audio) {
+                try {
+                    // intentar reproducir el archivo preferido 'prohibiendo.mp3'; si falla, usar el fallback
+                    audio.loop = true;
+                    audio.src = 'audios/prohibiendo.mp3';
+                    audio.load();
+                    const p = audio.play();
+                    if (p && typeof p.then === 'function') {
+                        p.catch(err => {
+                            console.warn('No se pudo reproducir prohibiendo.mp3, usando fallback:', err);
+                            try {
+                                audio.src = 'audios/oceano.wav';
+                                audio.loop = true;
+                                audio.load();
+                                audio.play().catch(err2 => console.warn('No se pudo reproducir audio fallback:', err2));
+                            } catch (e2) { console.warn('Error al reproducir fallback:', e2); }
+                        });
+                    }
+                } catch (e) { console.warn('Error al intentar reproducir audio:', e); }
+            }
 
-        // Intentar reproducir sonido (si existe). La reproducción suele estar permitida
-        // porque el usuario ha hecho click en el botón.
-        if(audio){
-            try{
-                // intentar reproducir el archivo preferido 'prohibiendo.mp3'; si falla, usar el fallback
-                audio.loop = true;
-                audio.src = 'audios/prohibiendo.mp3';
-                audio.load();
-                const p = audio.play();
-                if(p && typeof p.then === 'function'){
-                    p.catch(err => {
-                        console.warn('No se pudo reproducir prohibiendo.mp3, usando fallback:', err);
-                        try{
-                            audio.src = 'audios/oceano.wav';
-                            audio.loop = true;
-                            audio.load();
-                            audio.play().catch(err2 => console.warn('No se pudo reproducir audio fallback:', err2));
-                        }catch(e2){ console.warn('Error al reproducir fallback:', e2); }
-                    });
+            prohibitionInterval = setInterval(() => {
+                // calcular cuántos vacíos quedan en este momento
+                let currentEmpty = countEmptyPermissions();
+                // si ya alcanzamos el objetivo, detener y actualizar mensaje
+                if (currentEmpty <= TARGET_EMPTY_PERMISSIONS) {
+                    clearInterval(prohibitionInterval);
+                    prohibitionInterval = null;
+                    btn.textContent = 'Prohibido';
+                    btn.setAttribute('disabled', 'true'); // mantener deshabilitado
+                    if (mensajeEl) mensajeEl.textContent = `PROHIBIDO — quedan ${currentEmpty} permisos`;
+                    // detener audio si está sonando
+                    if (audio) { try { audio.pause(); audio.currentTime = 0; audio.loop = false; } catch (e) {/*ignore*/ } }
+                    return;
                 }
-            }catch(e){ console.warn('Error al intentar reproducir audio:', e); }
-        }
 
-        prohibitionInterval = setInterval(() => {
-            // calcular cuántos vacíos quedan en este momento
-            let currentEmpty = countEmptyPermissions();
-            // si ya alcanzamos el objetivo, detener y actualizar mensaje
-            if(currentEmpty <= TARGET_EMPTY_PERMISSIONS){
-                clearInterval(prohibitionInterval);
-                prohibitionInterval = null;
-                btn.textContent = 'Prohibido';
-                btn.setAttribute('disabled','true'); // mantener deshabilitado
-                if(mensajeEl) mensajeEl.textContent = `PROHIBIDO — quedan ${currentEmpty} permisos`;
-                // detener audio si está sonando
-                if(audio){ try{ audio.pause(); audio.currentTime = 0; audio.loop = false; } catch(e){/*ignore*/} }
-                return;
-            }
+                // elegir una celda vacía al azar y convertirla
+                const cell = pickRandomEmptyCell();
+                if (!cell) {
+                    // no hay vacíos (caso borde), detener y actualizar mensaje
+                    clearInterval(prohibitionInterval);
+                    prohibitionInterval = null;
+                    btn.textContent = 'Prohibido';
+                    btn.setAttribute('disabled', 'true');
+                    currentEmpty = countEmptyPermissions();
+                    if (mensajeEl) mensajeEl.textContent = `PROHIBIDO — quedan ${currentEmpty} permisos`;
+                    if (audio) { try { audio.pause(); audio.currentTime = 0; audio.loop = false; } catch (e) {/*ignore*/ } }
+                    return;
+                }
 
-            // elegir una celda vacía al azar y convertirla
-            const cell = pickRandomEmptyCell();
-            if(!cell){
-                // no hay vacíos (caso borde), detener y actualizar mensaje
-                clearInterval(prohibitionInterval);
-                prohibitionInterval = null;
-                btn.textContent = 'Prohibido';
-                btn.setAttribute('disabled','true');
+                // convertir a permiso_X (IMAGES[0])
+                const img = cell.querySelector('img');
+                cell.dataset.imgIndex = PERMISO_X.toString();
+                img.src = IMAGES[PERMISO_X];
+                img.alt = 'permiso_X';
+
+                // actualizar contador visible
                 currentEmpty = countEmptyPermissions();
-                if(mensajeEl) mensajeEl.textContent = `PROHIBIDO — quedan ${currentEmpty} permisos`;
-                if(audio){ try{ audio.pause(); audio.currentTime = 0; audio.loop = false; } catch(e){/*ignore*/} }
-                return;
+                if (mensajeEl) mensajeEl.textContent = `PROHIBIENDO... quedan ${currentEmpty} permisos vacíos`;
+            }, PROHIBITION_INTERVAL_MS);
+        }
+
+        // Inicialización
+        createGrid();
+
+        // botón 'Prohibir' (antes 'Mezclar')
+        document.getElementById('shuffle').addEventListener('click', startProhibition);
+        document.getElementById('reset').addEventListener('click', function () { resetGrid(); restoreUIAfterReset(); });
+
+        // Soporte para teclado: navegar con flechas y activar con Enter/Espacio
+        PANEL.addEventListener('keydown', (e) => {
+            const active = document.activeElement;
+            if (!active || !PANEL.contains(active)) return;
+            const cells = Array.from(PANEL.querySelectorAll('.cell'));
+            const idx = cells.indexOf(active);
+            if (idx === -1) return;
+            const col = idx % COLS;
+            const row = Math.floor(idx / COLS);
+            let newIdx = idx;
+            switch (e.key) {
+                case 'ArrowRight': newIdx = (col < COLS - 1) ? idx + 1 : idx; break;
+                case 'ArrowLeft': newIdx = (col > 0) ? idx - 1 : idx; break;
+                case 'ArrowDown': newIdx = (row < ROWS - 1) ? idx + COLS : idx; break;
+                case 'ArrowUp': newIdx = (row > 0) ? idx - COLS : idx; break;
+                case 'Enter': case ' ': active.click(); e.preventDefault(); return;
+                default: return;
             }
+            cells[newIdx].focus();
+            e.preventDefault();
+        });
 
-            // convertir a permiso_X (IMAGES[0])
-            const img = cell.querySelector('img');
-            cell.dataset.imgIndex = PERMISO_X.toString();
-            img.src = IMAGES[PERMISO_X];
-            img.alt = 'permiso_X';
+        // Para accesibilidad: enfocar la primera celda al cargar
+        window.addEventListener('load', () => {
+            const first = PANEL.querySelector('.cell');
+            if (first) first.focus();
+        });
 
-            // actualizar contador visible
-            currentEmpty = countEmptyPermissions();
-            if(mensajeEl) mensajeEl.textContent = `PROHIBIENDO... quedan ${currentEmpty} permisos vacíos`;
-        }, PROHIBITION_INTERVAL_MS);
-    }
-
-    // Inicialización
-    createGrid();
-
-    // botón 'Prohibir' (antes 'Mezclar')
-    document.getElementById('shuffle').addEventListener('click', startProhibition);
-    document.getElementById('reset').addEventListener('click', function(){ resetGrid(); restoreUIAfterReset(); });
-
-    // Soporte para teclado: navegar con flechas y activar con Enter/Espacio
-    PANEL.addEventListener('keydown', (e)=>{
-        const active = document.activeElement;
-        if(!active || !PANEL.contains(active)) return;
-        const cells = Array.from(PANEL.querySelectorAll('.cell'));
-        const idx = cells.indexOf(active);
-        if(idx === -1) return;
-        const col = idx % COLS;
-        const row = Math.floor(idx / COLS);
-        let newIdx = idx;
-        switch(e.key){
-            case 'ArrowRight': newIdx = (col < COLS-1) ? idx+1 : idx; break;
-            case 'ArrowLeft': newIdx = (col > 0) ? idx-1 : idx; break;
-            case 'ArrowDown': newIdx = (row < ROWS-1) ? idx+COLS : idx; break;
-            case 'ArrowUp': newIdx = (row > 0) ? idx-COLS : idx; break;
-            case 'Enter': case ' ': active.click(); e.preventDefault(); return;
-            default: return;
+        // Asegurar que reset también restaura mensaje y HABILITA el botón para volver a ejecutar
+        function restoreUIAfterReset() {
+            const btn = document.getElementById('shuffle');
+            const mensajeEl = document.getElementById('mensaje');
+            if (btn) { btn.removeAttribute('disabled'); btn.textContent = 'Prohibir'; }
+            if (mensajeEl) { mensajeEl.textContent = 'PERMISOS DISPONIBLES'; }
+            // detener audio si estaba sonando
+            const audio = document.getElementById('audio-prohibiendo');
+            if (audio) { try { audio.pause(); audio.currentTime = 0; audio.loop = false; } catch (e) {/*ignore*/ } }
+            // si hay un intervalo en marcha, detenerlo
+            if (typeof prohibitionInterval !== 'undefined' && prohibitionInterval) {
+                clearInterval(prohibitionInterval);
+                prohibitionInterval = null;
+            }
         }
-        cells[newIdx].focus();
-        e.preventDefault();
-    });
 
-    // Para accesibilidad: enfocar la primera celda al cargar
-    window.addEventListener('load', ()=>{
-        const first = PANEL.querySelector('.cell');
-        if(first) first.focus();
-    });
+        // Enlazar restoreUIAfterReset dentro de resetGrid
+        // (aseguramos que el listener solo existe en la forma que limpia la UI/intervalo/audio)
+        try { document.getElementById('reset').removeEventListener('click', resetGrid); } catch (e) { /* ignore if not attached */ }
+        document.getElementById('reset').addEventListener('click', function () { resetGrid(); restoreUIAfterReset(); });
 
-    // Asegurar que reset también restaura mensaje y HABILITA el botón para volver a ejecutar
-    function restoreUIAfterReset(){
-        const btn = document.getElementById('shuffle');
-        const mensajeEl = document.getElementById('mensaje');
-        if(btn){ btn.removeAttribute('disabled'); btn.textContent = 'Prohibir'; }
-        if(mensajeEl){ mensajeEl.textContent = 'PERMISOS DISPONIBLES'; }
-        // detener audio si estaba sonando
-        const audio = document.getElementById('audio-prohibiendo');
-        if(audio){ try{ audio.pause(); audio.currentTime = 0; audio.loop = false; } catch(e){/*ignore*/} }
-        // si hay un intervalo en marcha, detenerlo
-        if(typeof prohibitionInterval !== 'undefined' && prohibitionInterval){
-            clearInterval(prohibitionInterval);
-            prohibitionInterval = null;
-        }
-    }
+        // No se requiere lógica JS adicional para mostrar/ocultar controles;
+        // los controles son siempre visibles en la esquina inferior izquierda.
 
-    // Enlazar restoreUIAfterReset dentro de resetGrid
-    // (aseguramos que el listener solo existe en la forma que limpia la UI/intervalo/audio)
-    try{ document.getElementById('reset').removeEventListener('click', resetGrid); } catch(e) { /* ignore if not attached */ }
-    document.getElementById('reset').addEventListener('click', function(){ resetGrid(); restoreUIAfterReset(); });
-
-    // No se requiere lógica JS adicional para mostrar/ocultar controles;
-    // los controles son siempre visibles en la esquina inferior izquierda.
-
-</script>
+    </script>
 
 </body>
+
 </html>
