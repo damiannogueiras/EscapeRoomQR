@@ -163,6 +163,7 @@ h3,
 .terminal-text {
     font-family: var(--font-mono);
     line-height: 1.4;
+    color: var(--primary-color);
 }
 
 .highlight-text {

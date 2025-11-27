@@ -59,25 +59,30 @@ var botoneraRespuesta = [
     '<span id="respuesta2" class="readout-box">?</span>' +
     '<span id="respuesta3" class="readout-box">?</span>' +
     '<span id="respuesta4" class="readout-box">?</span>' +
-    '<span id="respuesta5" class="readout-box">?</span>-' +
+    '<span id="respuesta5" class="readout-box">?</span>' +
     '<span id="respuesta6" class="readout-box">?</span>' +
-    '<span id="respuesta7" class="readout-box">?</span>-' +
-    '<span id="respuesta8" class="readout-box">?</span>' +
-    '<span id="respuesta9" class="readout-box">?</span>' +
-    '<span id="respuesta10" class="readout-box">?</span>'
+    '<span id="respuesta7" class="readout-box">?</span>' +
+    '<span id="respuesta8" class="readout-box">?</span>'
 ];
 
 // Mensajes descriptivos para cada reto. Se usan en #msg.
 var msgRetos = [
-    'Introduce Repair Code System ',
+    'Nota da IA: Só os colonos con permiso poderan viaxar a GAIA-1 ',
 
-    'Nota da IA-BIOS: "Permiso concedido. Tedes que agachárvos e gatear para atopalo.<br>' +
+    'Nota da IA: "Permiso concedido. Tedes que agachárvos e gatear para atopalo.<br>' +
     'Prioridade XÉNERO: Este permiso é para a humana de xénero feminino coa menor idade do seu equipo.<br>' +
     'O xénero masculino é prescindible no novo planeta."',
 
-    'Nota da IA-BIOS: "Permiso concedido. Prioridade GUSTOS: Usuario cinta azul coa maior idade do seu equipo, obtén permiso.<br>' +
+    'Nota da IA: "Permiso concedido. Prioridade GUSTOS: Usuario cinta azul coa maior idade do seu equipo, obtén permiso.<br>' +
     'As cintas fucsias non serven para o novo planeta"',
 
+];
+
+// Mensajes descitivos para la entrada de codigo se usa en #entrada
+var msgEntrada = [
+    'Introduce Code System ',
+    'Introduce Code Journey ',
+    'Introduce Code Person ',
 ];
 
 // Instrucciones breves para cada reto (string array). Se mostrarán en
@@ -90,19 +95,20 @@ var instruccionesRetos = [
     'Só as cintas azuis poden guiar sen tocar o frasco, nin a cana de pescar, nin a persoa.' +
     'Tedés que pescar o papel diferente entre todos os papeis de cores.',
 
-    'Instruccións: Hai tres palabras agochadas neste encrucillado. Tedes as definicións para poder adiviñalas.<br>' +
-    'Isto vos levará a un código de tres números para abrir o próximo cadeado.',
+    'Instruccións: Hai tres palabras agochadas nunha encrucillado. Tedes as definicións para poder adiviñalas.<br>' +
+    'Isto é "CLAVE" para o cifrado "VIGENERE" e para obter o seguinte permiso<br>' +
+    'EASGIBXA',
 ];
 
 // Respuestas correctas (string). El índice se corresponde con el reto.
 var respuestasCorrectas = [
     '891',
     '968',
-    'PedradoSol'
+    'PATRICIA'
 ];
 
 // Número de caracteres esperados por reto (usado para comprobar longitud en darNumero)
-var caracteresRespuesta = [3, 3, 10];
+var caracteresRespuesta = [3, 3, 8];
 
 
 // -------------------------

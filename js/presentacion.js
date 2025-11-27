@@ -149,6 +149,7 @@ function actualizar(reto) {
     var $botonerarespuesta = $('#botonerarespuesta');
     var $instrucciones = $('#instrucciones');
     var $msg = $('#msg');
+    var $entrada = $('#entrada');
 
     // Always show input sections on index.html (we removed ultimo.html flow)
     if ($labelRespuesta && $labelRespuesta.show) { $labelRespuesta.show(); }
@@ -156,12 +157,19 @@ function actualizar(reto) {
 
     // Write safe values (use empty string if undefined)
     var safeMsg = (msgRetos[idx] !== undefined) ? msgRetos[idx] : '';
+    var safeEntrada = (msgEntrada[idx] !== undefined) ? msgEntrada[idx] : '';
     var safeInstr = (typeof instruccionesRetos !== 'undefined' && instruccionesRetos[idx]) ? instruccionesRetos[idx] : '';
     var safeBotonera = (botonera[idx] !== undefined) ? botonera[idx] : '';
     var safeBotoneraRespuesta = (botoneraRespuesta[idx] !== undefined) ? botoneraRespuesta[idx] : '';
 
     if ($msg && $msg[0]) { $msg[0].innerHTML = safeMsg; }
+    if ($entrada && $entrada[0]) { $entrada[0].innerHTML = safeEntrada; }
     if ($instrucciones && $instrucciones[0]) { $instrucciones[0].innerHTML = safeInstr; }
     if ($botonera && $botonera[0]) { $botonera[0].innerHTML = safeBotonera; }
     if ($botonerarespuesta && $botonerarespuesta[0]) { $botonerarespuesta[0].innerHTML = safeBotoneraRespuesta; }
+
+    // Update progress indicators
+    $('.progress-step').removeClass('active');
+    var $currentReto = $('#reto' + idx);
+    if ($currentReto && $currentReto[0]) { $currentReto.addClass('active'); }
 }
