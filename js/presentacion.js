@@ -54,6 +54,12 @@ function darNumero(numero) {
         var $retoEl = $('#reto' + retoActual);
         if ($retoEl && $retoEl[0]) { $retoEl[0].innerHTML = checkReto; }
 
+        // Reproducir sonido de éxito
+        var conseguidoAudio = new Audio('audios/conseguido.mp3');
+        conseguidoAudio.play().catch(error => {
+            console.log('Audio play prevented:', error);
+        });
+
         // Avanzar al siguiente reto
         retoActual = retoActual + 1;
 
