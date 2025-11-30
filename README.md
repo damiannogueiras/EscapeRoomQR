@@ -1,6 +1,6 @@
 # webQR — Descripción del proyecto
 
-Resumen
+Resumen-
 -------
 Este repositorio contiene una página web estática (HTML/CSS/JS) diseñada para mostrar una presentación audiovisual y páginas relacionadas con un QR final (`qrultimo.png` / `ultimo.html`). Es una página sencilla basada en Bootstrap con recursos multimedia (audio/video), scripts de control y soporte para MQTT (bibliotecas incluidas).
 
